@@ -130,6 +130,7 @@
  * GLOBAL VARIABLES
  */
 byte zclSampleLight_TaskID;
+byte zclSampleLight1_TaskID;
 uint8 zclSampleLightSeqNum;
 
 
@@ -193,7 +194,7 @@ static endPointDesc_t sampleLight_TestEp =
 static endPointDesc_t sampleLight_TestEp1 =
 {
   SAMPLELIGHT_ENDPOINT+1,
-  &zclSampleLight_TaskID,
+  &zclSampleLight1_TaskID,
   (SimpleDescriptionFormat_t *)NULL,  // No Simple description for this test endpoint
   (afNetworkLatencyReq_t)0            // No Network Latency req
 };
@@ -340,15 +341,12 @@ void zclSampleLight_Init( byte task_id )
  
 // This app is part of the Home Automation Profile
   zclHA_Init( &(zclSampleLight_SimpleDesc[0]) ); //button 1
-  zclHA_Init( &(zclSampleLight_SimpleDesc[1]) ); //button 2
 
   // Register the ZCL General Cluster Library callback functions
   zclGeneral_RegisterCmdCallbacks( SAMPLELIGHT_ENDPOINT, &zclSampleLight_CmdCallbacks );//button 1
-  zclGeneral_RegisterCmdCallbacks( SAMPLELIGHT_ENDPOINT+1, &zclSampleLight_CmdCallbacks );//button 2
 
   // Register the application's attribute list
   zcl_registerAttrList( SAMPLELIGHT_ENDPOINT, zclSampleLight_NumAttributes, zclSampleLight_Attrs );//button 1
-  zcl_registerAttrList( SAMPLELIGHT_ENDPOINT+1, zclSampleLight_NumAttributes, zclSampleLight_Attrs );//button 2
 
   // Register the Application to receive the unprocessed Foundation command/response messages
   zcl_registerForMsg( zclSampleLight_TaskID );
@@ -356,33 +354,111 @@ void zclSampleLight_Init( byte task_id )
 #ifdef ZCL_DISCOVER
   // Register the application's command list
   zcl_registerCmdList( SAMPLELIGHT_ENDPOINT, zclCmdsArraySize, zclSampleLight_Cmds );//button 1
-  zcl_registerCmdList( SAMPLELIGHT_ENDPOINT+1, zclCmdsArraySize, zclSampleLight_Cmds );//button 1
 #endif
-  
-  
-/*  // This app is part of the Home Automation Profile
-  zclHA_Init( &zclSampleLight_SimpleDesc );
-
-  // Register the ZCL General Cluster Library callback functions
-  zclGeneral_RegisterCmdCallbacks( SAMPLELIGHT_ENDPOINT, &zclSampleLight_CmdCallbacks );
-
-  // Register the application's attribute list
-  zcl_registerAttrList( SAMPLELIGHT_ENDPOINT, zclSampleLight_NumAttributes, zclSampleLight_Attrs );
-
-  // Register the Application to receive the unprocessed Foundation command/response messages
-  zcl_registerForMsg( zclSampleLight_TaskID );
-
-#ifdef ZCL_DISCOVER
-  // Register the application's command list
-  zcl_registerCmdList( SAMPLELIGHT_ENDPOINT, zclCmdsArraySize, zclSampleLight_Cmds );
-  zcl_registerCmdList( SAMPLELIGHT_ENDPOINT+1, zclCmdsArraySize, zclSampleLight_Cmds );
-#endif*/
 
   // Register for all key events - This app will handle all key events
   RegisterForKeys( zclSampleLight_TaskID );
 
   // Register for a test endpoint
   afRegister( &sampleLight_TestEp );
+  //afRegister( &sampleLight_TestEp1 );
+
+#ifdef ZCL_EZMODE
+  // Register EZ-Mode
+  zcl_RegisterEZMode( &zclSampleLight_RegisterEZModeData );
+
+  // Register with the ZDO to receive Match Descriptor Responses
+  ZDO_RegisterForZDOMsg(task_id, Match_Desc_rsp);
+#endif
+
+
+#if (defined HAL_BOARD_ZLIGHT) || (defined HAL_PWM)
+  HalTimer1Init( 0 );
+  halTimer1SetChannelDuty( WHITE_LED, 0 );
+  halTimer1SetChannelDuty( RED_LED, 0 );
+  halTimer1SetChannelDuty( BLUE_LED, 0 );
+  halTimer1SetChannelDuty( GREEN_LED, 0 );
+
+  // find if we are already on a network from NV_RESTORE
+  uint8 state;
+  NLME_GetRequest( nwkNwkState, 0, &state );
+
+  if ( state < NWK_ENDDEVICE )
+  {
+    // Start EZMode on Start up to avoid button press
+    osal_start_timerEx( zclSampleLight_TaskID, SAMPLELIGHT_START_EZMODE_EVT, 500 );
+  }
+#if ZCL_LEVEL_CTRL
+  zclSampleLight_DefaultMove();
+#endif
+#endif // #if (defined HAL_BOARD_ZLIGHT) || (defined HAL_PWM)
+
+#ifdef ZCL_DIAGNOSTIC
+  // Register the application's callback function to read/write attribute data.
+  // This is only required when the attribute data format is unknown to ZCL.
+  zcl_registerReadWriteCB( SAMPLELIGHT_ENDPOINT, zclDiagnostic_ReadWriteAttrCB, NULL );
+
+  if ( zclDiagnostic_InitStats() == ZSuccess )
+  {
+    // Here the user could start the timer to save Diagnostics to NV
+  }
+#endif
+
+#ifdef LCD_SUPPORTED
+  HalLcdWriteString ( (char *)sDeviceName, HAL_LCD_LINE_3 );
+#endif  // LCD_SUPPORTED
+
+#ifdef ZGP_AUTO_TT
+  zgpTranslationTable_RegisterEP ( &zclSampleLight_SimpleDesc[0] );
+#endif
+}
+
+
+/*********************************************************************
+ * @fn          zclSampleLight_Init
+ *
+ * @brief       Initialization function for the zclGeneral layer.
+ *
+ * @param       none
+ *
+ * @return      none
+ */
+void zclSampleLight1_Init( byte task_id )
+{
+  zclSampleLight1_TaskID = task_id;
+
+  
+  // Set destination address to indirect
+  zclSampleLight_DstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
+  zclSampleLight_DstAddr.endPoint = 0;
+  zclSampleLight_DstAddr.addr.shortAddr = 0;
+
+// This app is part of the Home Automation Profile
+  zclHA_Init( &(zclSampleLight_SimpleDesc[1]) ); //button 2
+
+  // Register the ZCL General Cluster Library callback functions
+  zclGeneral_RegisterCmdCallbacks( SAMPLELIGHT_ENDPOINT+1, &zclSampleLight_CmdCallbacks );//button 2
+
+  // Register the application's attribute list
+  zcl_registerAttrList( SAMPLELIGHT_ENDPOINT+1, zclSampleLight_NumAttributes, zclSampleLight_Attrs );//button 2
+
+  // Register the Application to receive the unprocessed Foundation command/response messages
+//  zcl_registerForMsg( zclSampleLight1_TaskID );
+
+#ifdef ZCL_DISCOVER
+  // Register the application's command list
+  zcl_registerCmdList( SAMPLELIGHT_ENDPOINT+1, zclCmdsArraySize, zclSampleLight_Cmds );//button 1
+#endif
+
+#ifdef ZCL_DISCOVER
+  // Register the application's command list
+  zcl_registerCmdList( SAMPLELIGHT_ENDPOINT+1, zclCmdsArraySize, zclSampleLight_Cmds );
+#endif
+
+  // Register for all key events - This app will handle all key events
+//  RegisterForKeys( zclSampleLight1_TaskID );
+
+  // Register for a test endpoint
   afRegister( &sampleLight_TestEp1 );
 
 #ifdef ZCL_EZMODE
@@ -431,9 +507,10 @@ void zclSampleLight_Init( byte task_id )
 #endif  // LCD_SUPPORTED
 
 #ifdef ZGP_AUTO_TT
-  zgpTranslationTable_RegisterEP ( &zclSampleLight_SimpleDesc );
+  zgpTranslationTable_RegisterEP ( &zclSampleLight_SimpleDesc[1] );
 #endif
 }
+
 
 /*********************************************************************
  * @fn          zclSample_event_loop

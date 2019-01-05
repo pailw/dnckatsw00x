@@ -734,7 +734,7 @@ SimpleDescriptionFormat_t zclSampleLight_SimpleDesc[2] =
   (cId_t *)zclSampleLight_OutClusterList //  byte *pAppInClusterList;
   },
   {
-  SAMPLELIGHT_ENDPOINT,                  //  int Endpoint;
+  SAMPLELIGHT_ENDPOINT+1,                  //  int Endpoint;
   ZCL_HA_PROFILE_ID,                     //  uint16 AppProfId;
 #ifdef ZCL_LEVEL_CTRL
   ZCL_HA_DEVICEID_DIMMABLE_LIGHT,        //  uint16 AppDeviceId;
