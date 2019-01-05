@@ -54,7 +54,7 @@ extern "C"
 /*********************************************************************
  * CONSTANTS
  */
-#define SAMPLELIGHT_ENDPOINT            8
+#define SAMPLELIGHT_ENDPOINT            1
 
 #define LIGHT_OFF                       0x00
 #define LIGHT_ON                        0x01
@@ -101,6 +101,9 @@ extern uint8  zclSampleLight_IdentifyCommissionState;
 // OnOff attributes
 extern uint8  zclSampleLight_OnOff;
 extern uint8  zclSampleLight_OnOff1;
+extern uint8  zclSampleLight_Hold;
+extern uint8  zclSampleLight_Hold1;
+extern uint8  zclSampleLight_DeviceEnable;
 
 // Level Control Attributes
 #ifdef ZCL_LEVEL_CTRL

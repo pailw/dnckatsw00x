@@ -666,12 +666,16 @@ uint16 zclSampleLight_event_loop( uint8 task_id, uint16 events )
  */
 static void zclSampleLight_HandleKeys( byte shift, byte keys )
 {
+  zclSampleLight_Hold = 0;
+  zclSampleLight_Hold1 = 0;
+
   if ( keys & HAL_KEY_SW_1 )
   {
     giLightScreenMode = LIGHT_MAINMODE;
 
     // toggle local light immediately
     zclSampleLight_OnOff = zclSampleLight_OnOff ? LIGHT_OFF : LIGHT_ON;
+    zclSampleLight_Hold = 1;
 #ifdef ZCL_LEVEL_CTRL
     zclSampleLight_LevelCurrentLevel = zclSampleLight_OnOff ? zclSampleLight_LevelOnLevel : ATTR_LEVEL_MIN_LEVEL;
 #endif
@@ -683,6 +687,8 @@ static void zclSampleLight_HandleKeys( byte shift, byte keys )
 
     // toggle local light immediately
     zclSampleLight_OnOff1 = zclSampleLight_OnOff1 ? LIGHT_OFF : LIGHT_ON;
+    zclSampleLight_Hold1 = 1;
+
 #ifdef ZCL_LEVEL_CTRL
     zclSampleLight_LevelCurrentLevel = zclSampleLight_OnOff ? zclSampleLight_LevelOnLevel : ATTR_LEVEL_MIN_LEVEL;
 #endif
@@ -803,34 +809,53 @@ static void zclSampleLight_HandleKeys( byte shift, byte keys )
  */
 void zclSampleLight_LcdDisplayUpdate( void )
 {
-  
    //report state for button 1
   zclSampleLightSeqNum++;
+  zclReportCmd_t rptnullcmd;
+  rptnullcmd.numAttr = 0;
+
   zclReportCmd_t rptcmd;
   rptcmd.numAttr = 1;
-  rptcmd.attrList[0].attrID = ATTRID_ON_OFF;
-  rptcmd.attrList[0].dataType = ZCL_DATATYPE_BOOLEAN;
-  rptcmd.attrList[0].attrData = (void *)(&zclSampleLight_OnOff);
-
   // Set destination address to indirect
   zclSampleLight_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
   zclSampleLight_DstAddr.addr.shortAddr = 0;
   zclSampleLight_DstAddr.endPoint=1;
-  zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_ON_OFF, &rptcmd, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNum );
+
+  if (zclSampleLight_Hold == 1) {
+    rptcmd.attrList[0].attrID = ATTRID_ON_OFF;
+    rptcmd.attrList[0].dataType = ZCL_DATATYPE_BOOLEAN;
+    rptcmd.attrList[0].attrData = (void *)(&zclSampleLight_OnOff);
+    zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_ON_OFF, &rptcmd, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNum );
+  } else {
+//	    rptcmd.attrList[0].attrID = ATTRID_BASIC_DEVICE_ENABLED;
+//	    rptcmd.attrList[0].dataType = ZCL_DATATYPE_BOOLEAN;
+//	    rptcmd.attrList[0].attrData = (void *)(&zclSampleLight_DeviceEnable);
+	    //zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_BASIC, &rptcmd, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNum );
+//	    zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_ON_OFF, &rptnullcmd, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNum );
+  }
+
+
   //report state for button 2
   zclSampleLightSeqNum++;
   zclReportCmd_t rptcmd1;
-  rptcmd1.numAttr = 1;
-  rptcmd1.attrList[0].attrID = ATTRID_ON_OFF;
-  rptcmd1.attrList[0].dataType = ZCL_DATATYPE_BOOLEAN;
-  rptcmd1.attrList[0].attrData = (void *)(&zclSampleLight_OnOff1);
-
   // Set destination address to indirect
   zclSampleLight_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
   zclSampleLight_DstAddr.addr.shortAddr = 0;
   zclSampleLight_DstAddr.endPoint=1;
-  zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT+1,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_ON_OFF, &rptcmd1, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNum );
-  
+  rptcmd1.numAttr = 1;
+
+  if (zclSampleLight_Hold1 == 1) {
+    rptcmd1.attrList[0].attrID = ATTRID_ON_OFF;
+    rptcmd1.attrList[0].dataType = ZCL_DATATYPE_BOOLEAN;
+    rptcmd1.attrList[0].attrData = (void *)(&zclSampleLight_OnOff1);
+    zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT+1,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_ON_OFF, &rptcmd1, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNum );
+  } else {
+//	    rptcmd1.attrList[0].attrID = ATTRID_BASIC_DEVICE_ENABLED;
+//	    rptcmd1.attrList[0].dataType = ZCL_DATATYPE_BOOLEAN;
+//	    rptcmd1.attrList[0].attrData = (void *)(&zclSampleLight_DeviceEnable);
+//	    zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT+1,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_BASIC, &rptcmd1, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNum );
+//	    zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT+1,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_ON_OFF, &rptnullcmd, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNum );
+  }
   /*//report state
   zclSampleLightSeqNumState++;
   zclReportCmd_t rptcmd;

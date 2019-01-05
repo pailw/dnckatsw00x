@@ -107,6 +107,9 @@ uint8  zclSampleLight_IdentifyCommissionState;
 uint8  zclSampleLight_OnOff = LIGHT_OFF;
 uint8  zclSampleLight_OnOff1 = LIGHT_OFF;
 
+uint8  zclSampleLight_Hold = 0;
+uint8  zclSampleLight_Hold1 = 0;
+
 // Level Control Cluster
 #ifdef ZCL_LEVEL_CTRL
 uint8  zclSampleLight_LevelCurrentLevel = ATTR_LEVEL_MIN_LEVEL;
