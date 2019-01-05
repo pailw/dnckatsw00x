@@ -160,12 +160,24 @@ static const zclEZMode_RegisterData_t zclSampleLight_RegisterEZModeData =
 #else
 uint16 bindingInClusters[] =
 {
+//  ZCL_CLUSTER_ID_GEN_ON_OFF,
   ZCL_CLUSTER_ID_GEN_ON_OFF
 #ifdef ZCL_LEVEL_CTRL
   , ZCL_CLUSTER_ID_GEN_LEVEL_CONTROL
 #endif
 };
 #define ZCLSAMPLELIGHT_BINDINGLIST (sizeof(bindingInClusters) / sizeof(bindingInClusters[0]))
+
+static cId_t bindingOutClusters[] =
+{
+//  ZCL_CLUSTER_ID_GEN_ON_OFF,
+  ZCL_CLUSTER_ID_GEN_ON_OFF
+#ifdef ZCL_LEVEL_CTRL
+  , ZCL_CLUSTER_ID_GEN_LEVEL_CONTROL
+#endif
+};
+#define ZCLSAMPLELIGHT_BINDINGLISTOUT (sizeof(bindingOutClusters) / sizeof(bindingOutClusters[0]))
+
 
 #endif  // ZCL_EZMODE
 
@@ -178,6 +190,13 @@ static endPointDesc_t sampleLight_TestEp =
   (afNetworkLatencyReq_t)0            // No Network Latency req
 };
 
+static endPointDesc_t sampleLight_TestEp1 =
+{
+  SAMPLELIGHT_ENDPOINT+1,
+  &zclSampleLight_TaskID,
+  (SimpleDescriptionFormat_t *)NULL,  // No Simple description for this test endpoint
+  (afNetworkLatencyReq_t)0            // No Network Latency req
+};
 uint8 giLightScreenMode = LIGHT_MAINMODE;   // display the main screen mode first
 
 uint8 gPermitDuration = 0;    // permit joining default to disabled
@@ -313,12 +332,35 @@ void zclSampleLight_Init( byte task_id )
 {
   zclSampleLight_TaskID = task_id;
 
+  
   // Set destination address to indirect
   zclSampleLight_DstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
   zclSampleLight_DstAddr.endPoint = 0;
   zclSampleLight_DstAddr.addr.shortAddr = 0;
+ 
+// This app is part of the Home Automation Profile
+  zclHA_Init( &(zclSampleLight_SimpleDesc[0]) ); //button 1
+  zclHA_Init( &(zclSampleLight_SimpleDesc[1]) ); //button 2
 
-  // This app is part of the Home Automation Profile
+  // Register the ZCL General Cluster Library callback functions
+  zclGeneral_RegisterCmdCallbacks( SAMPLELIGHT_ENDPOINT, &zclSampleLight_CmdCallbacks );//button 1
+  zclGeneral_RegisterCmdCallbacks( SAMPLELIGHT_ENDPOINT+1, &zclSampleLight_CmdCallbacks );//button 2
+
+  // Register the application's attribute list
+  zcl_registerAttrList( SAMPLELIGHT_ENDPOINT, zclSampleLight_NumAttributes, zclSampleLight_Attrs );//button 1
+  zcl_registerAttrList( SAMPLELIGHT_ENDPOINT+1, zclSampleLight_NumAttributes, zclSampleLight_Attrs );//button 2
+
+  // Register the Application to receive the unprocessed Foundation command/response messages
+  zcl_registerForMsg( zclSampleLight_TaskID );
+
+#ifdef ZCL_DISCOVER
+  // Register the application's command list
+  zcl_registerCmdList( SAMPLELIGHT_ENDPOINT, zclCmdsArraySize, zclSampleLight_Cmds );//button 1
+  zcl_registerCmdList( SAMPLELIGHT_ENDPOINT+1, zclCmdsArraySize, zclSampleLight_Cmds );//button 1
+#endif
+  
+  
+/*  // This app is part of the Home Automation Profile
   zclHA_Init( &zclSampleLight_SimpleDesc );
 
   // Register the ZCL General Cluster Library callback functions
@@ -333,13 +375,15 @@ void zclSampleLight_Init( byte task_id )
 #ifdef ZCL_DISCOVER
   // Register the application's command list
   zcl_registerCmdList( SAMPLELIGHT_ENDPOINT, zclCmdsArraySize, zclSampleLight_Cmds );
-#endif
+  zcl_registerCmdList( SAMPLELIGHT_ENDPOINT+1, zclCmdsArraySize, zclSampleLight_Cmds );
+#endif*/
 
   // Register for all key events - This app will handle all key events
   RegisterForKeys( zclSampleLight_TaskID );
 
   // Register for a test endpoint
   afRegister( &sampleLight_TestEp );
+  afRegister( &sampleLight_TestEp1 );
 
 #ifdef ZCL_EZMODE
   // Register EZ-Mode
@@ -556,7 +600,19 @@ static void zclSampleLight_HandleKeys( byte shift, byte keys )
 #endif
   }
 
-  if ( keys & HAL_KEY_SW_2 )
+  if ( keys & HAL_KEY_SW_3 )
+  {
+    giLightScreenMode = LIGHT_MAINMODE;
+
+    // toggle local light immediately
+    zclSampleLight_OnOff1 = zclSampleLight_OnOff1 ? LIGHT_OFF : LIGHT_ON;
+#ifdef ZCL_LEVEL_CTRL
+    zclSampleLight_LevelCurrentLevel = zclSampleLight_OnOff ? zclSampleLight_LevelOnLevel : ATTR_LEVEL_MIN_LEVEL;
+#endif
+  }
+
+  
+  if ( keys & HAL_KEY_SW_6 )
   {
 #if (defined HAL_BOARD_ZLIGHT)
 
@@ -604,7 +660,15 @@ static void zclSampleLight_HandleKeys( byte shift, byte keys )
                            SAMPLELIGHT_ENDPOINT,
                            ZCL_HA_PROFILE_ID,
                            ZCLSAMPLELIGHT_BINDINGLIST, bindingInClusters,
-                           0, NULL,   // No Outgoing clusters to bind
+//                           ZCLSAMPLELIGHT_BINDINGLISTOUT, bindingOutClusters,
+                           0,NULL,
+                           TRUE );
+      ZDP_EndDeviceBindReq( &dstAddr, NLME_GetShortAddr(),
+                           SAMPLELIGHT_ENDPOINT+1,
+                           ZCL_HA_PROFILE_ID,
+                           ZCLSAMPLELIGHT_BINDINGLIST, bindingInClusters,
+//                           ZCLSAMPLELIGHT_BINDINGLISTOUT, bindingOutClusters,
+                           0,NULL,
                            TRUE );
     }
 #endif // ZCL_EZMODE
@@ -662,6 +726,48 @@ static void zclSampleLight_HandleKeys( byte shift, byte keys )
  */
 void zclSampleLight_LcdDisplayUpdate( void )
 {
+  
+   //report state for button 1
+  zclSampleLightSeqNum++;
+  zclReportCmd_t rptcmd;
+  rptcmd.numAttr = 1;
+  rptcmd.attrList[0].attrID = ATTRID_ON_OFF;
+  rptcmd.attrList[0].dataType = ZCL_DATATYPE_BOOLEAN;
+  rptcmd.attrList[0].attrData = (void *)(&zclSampleLight_OnOff);
+
+  // Set destination address to indirect
+  zclSampleLight_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+  zclSampleLight_DstAddr.addr.shortAddr = 0;
+  zclSampleLight_DstAddr.endPoint=1;
+  zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_ON_OFF, &rptcmd, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNum );
+  //report state for button 2
+  zclSampleLightSeqNum++;
+  zclReportCmd_t rptcmd1;
+  rptcmd1.numAttr = 1;
+  rptcmd1.attrList[0].attrID = ATTRID_ON_OFF;
+  rptcmd1.attrList[0].dataType = ZCL_DATATYPE_BOOLEAN;
+  rptcmd1.attrList[0].attrData = (void *)(&zclSampleLight_OnOff1);
+
+  // Set destination address to indirect
+  zclSampleLight_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+  zclSampleLight_DstAddr.addr.shortAddr = 0;
+  zclSampleLight_DstAddr.endPoint=1;
+  zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT+1,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_ON_OFF, &rptcmd1, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNum );
+  
+  /*//report state
+  zclSampleLightSeqNumState++;
+  zclReportCmd_t rptcmd;
+  rptcmd.numAttr = 1;
+  rptcmd.attrList[0].attrID = ATTRID_ON_OFF;
+  rptcmd.attrList[0].dataType = ZCL_DATATYPE_BOOLEAN;
+  rptcmd.attrList[0].attrData = (void *)(&zclSampleLight_OnOff);
+
+  // Set destination address to indirect
+  zclSampleLight_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+  zclSampleLight_DstAddr.addr.shortAddr = 0;
+  zclSampleLight_DstAddr.endPoint=1;
+  zcl_SendReportCmd(SAMPLELIGHT_ENDPOINT,&zclSampleLight_DstAddr, ZCL_CLUSTER_ID_GEN_ON_OFF, &rptcmd, ZCL_FRAME_SERVER_CLIENT_DIR, true, zclSampleLightSeqNumState );*/
+  
 #ifdef LCD_SUPPORTED
   if ( giLightScreenMode == LIGHT_HELPMODE )
   {
@@ -719,6 +825,15 @@ static void zclSampleLight_DisplayLight( void )
     HalLedSet ( HAL_LED_1, HAL_LED_MODE_OFF );
   }
 
+  if ( zclSampleLight_OnOff1 == LIGHT_ON )
+  {
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
+  }
+  else
+  {
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_OFF );
+  }  
+  
 #ifdef LCD_SUPPORTED
   if (giLightScreenMode == LIGHT_MAINMODE)
   {
@@ -926,7 +1041,8 @@ static void zclSampleLight_IdentifyQueryRspCB(  zclIdentifyQueryRsp_t *pRsp )
 static void zclSampleLight_OnOffCB( uint8 cmd )
 {
   afIncomingMSGPacket_t *pPtr = zcl_getRawAFMsg();
-
+if (pPtr->endPoint == SAMPLELIGHT_ENDPOINT) //button 1
+{
   zclSampleLight_DstAddr.addr.shortAddr = pPtr->srcAddr.addr.shortAddr;
 
 
@@ -952,6 +1068,36 @@ static void zclSampleLight_OnOffCB( uint8 cmd )
       zclSampleLight_OnOff = LIGHT_OFF;
     }
   }
+}
+else if (pPtr->endPoint == SAMPLELIGHT_ENDPOINT+1) //button 2
+{
+  zclSampleLight_DstAddr.addr.shortAddr = pPtr->srcAddr.addr.shortAddr;
+
+
+  // Turn on the light
+  if ( cmd == COMMAND_ON )
+  {
+    zclSampleLight_OnOff1 = LIGHT_ON;
+  }
+  // Turn off the light
+  else if ( cmd == COMMAND_OFF )
+  {
+    zclSampleLight_OnOff1 = LIGHT_OFF;
+  }
+  // Toggle the light
+  else if ( cmd == COMMAND_TOGGLE )
+  {
+    if ( zclSampleLight_OnOff1 == LIGHT_OFF )
+    {
+      zclSampleLight_OnOff1 = LIGHT_ON;
+    }
+    else
+    {
+      zclSampleLight_OnOff1 = LIGHT_OFF;
+    }
+  }
+
+}
 
 #if ZCL_LEVEL_CTRL
   zclSampleLight_DefaultMove( );

@@ -88,9 +88,9 @@
 // Basic Cluster
 const uint8 zclSampleLight_HWRevision = SAMPLELIGHT_HWVERSION;
 const uint8 zclSampleLight_ZCLVersion = SAMPLELIGHT_ZCLVERSION;
-const uint8 zclSampleLight_ManufacturerName[] = { 16, 'T','e','x','a','s','I','n','s','t','r','u','m','e','n','t','s' };
-const uint8 zclSampleLight_ModelId[] = { 16, 'T','I','0','0','0','1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ' };
-const uint8 zclSampleLight_DateCode[] = { 16, '2','0','0','6','0','8','3','1',' ',' ',' ',' ',' ',' ',' ',' ' };
+const uint8 zclSampleLight_ManufacturerName[] = { 6, 'D','N','C','K','A','T' };
+const uint8 zclSampleLight_ModelId[] = { 11, 'D','N','C','K','A','T','_','S','0','0','2' };// X is number from 1 to 4 defend on your usage
+const uint8 zclSampleLight_DateCode[] = { 16, '2','0','1','8','0','6','2','3',' ',' ',' ',' ',' ',' ',' ',' ' };
 const uint8 zclSampleLight_PowerSource = POWER_SOURCE_MAINS_1_PHASE;
 
 uint8 zclSampleLight_LocationDescription[17] = { 16, ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ' };
@@ -105,6 +105,7 @@ uint8  zclSampleLight_IdentifyCommissionState;
 
 // On/Off Cluster
 uint8  zclSampleLight_OnOff = LIGHT_OFF;
+uint8  zclSampleLight_OnOff1 = LIGHT_OFF;
 
 // Level Control Cluster
 #ifdef ZCL_LEVEL_CTRL
@@ -699,7 +700,7 @@ const cId_t zclSampleLight_OutClusterList[] =
 };
 #define ZCLSAMPLELIGHT_MAX_OUTCLUSTERS  (sizeof(zclSampleLight_OutClusterList) / sizeof(zclSampleLight_OutClusterList[0]))
 
-SimpleDescriptionFormat_t zclSampleLight_SimpleDesc =
+/*SimpleDescriptionFormat_t zclSampleLight_SimpleDesc =
 {
   SAMPLELIGHT_ENDPOINT,                  //  int Endpoint;
   ZCL_HA_PROFILE_ID,                     //  uint16 AppProfId;
@@ -714,6 +715,39 @@ SimpleDescriptionFormat_t zclSampleLight_SimpleDesc =
   (cId_t *)zclSampleLight_InClusterList, //  byte *pAppInClusterList;
   ZCLSAMPLELIGHT_MAX_OUTCLUSTERS,        //  byte  AppNumInClusters;
   (cId_t *)zclSampleLight_OutClusterList //  byte *pAppInClusterList;
+};*/
+SimpleDescriptionFormat_t zclSampleLight_SimpleDesc[2] =
+{
+{
+  SAMPLELIGHT_ENDPOINT,                  //  int Endpoint;
+  ZCL_HA_PROFILE_ID,                     //  uint16 AppProfId;
+#ifdef ZCL_LEVEL_CTRL
+  ZCL_HA_DEVICEID_DIMMABLE_LIGHT,        //  uint16 AppDeviceId;
+#else
+  ZCL_HA_DEVICEID_ON_OFF_LIGHT,          //  uint16 AppDeviceId;
+#endif
+  SAMPLELIGHT_DEVICE_VERSION,            //  int   AppDevVer:4;
+  SAMPLELIGHT_FLAGS,                     //  int   AppFlags:4;
+  ZCLSAMPLELIGHT_MAX_INCLUSTERS,         //  byte  AppNumInClusters;
+  (cId_t *)zclSampleLight_InClusterList, //  byte *pAppInClusterList;
+  ZCLSAMPLELIGHT_MAX_OUTCLUSTERS,        //  byte  AppNumInClusters;
+  (cId_t *)zclSampleLight_OutClusterList //  byte *pAppInClusterList;
+  },
+  {
+  SAMPLELIGHT_ENDPOINT,                  //  int Endpoint;
+  ZCL_HA_PROFILE_ID,                     //  uint16 AppProfId;
+#ifdef ZCL_LEVEL_CTRL
+  ZCL_HA_DEVICEID_DIMMABLE_LIGHT,        //  uint16 AppDeviceId;
+#else
+  ZCL_HA_DEVICEID_ON_OFF_LIGHT,          //  uint16 AppDeviceId;
+#endif
+  SAMPLELIGHT_DEVICE_VERSION,            //  int   AppDevVer:4;
+  SAMPLELIGHT_FLAGS,                     //  int   AppFlags:4;
+  ZCLSAMPLELIGHT_MAX_INCLUSTERS,         //  byte  AppNumInClusters;
+  (cId_t *)zclSampleLight_InClusterList, //  byte *pAppInClusterList;
+  ZCLSAMPLELIGHT_MAX_OUTCLUSTERS,        //  byte  AppNumInClusters;
+  (cId_t *)zclSampleLight_OutClusterList //  byte *pAppInClusterList;
+  }
 };
 
 /*********************************************************************

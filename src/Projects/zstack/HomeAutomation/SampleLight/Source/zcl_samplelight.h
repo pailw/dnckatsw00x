@@ -82,7 +82,9 @@ extern "C"
 /*********************************************************************
  * VARIABLES
  */
-extern SimpleDescriptionFormat_t zclSampleLight_SimpleDesc;
+extern SimpleDescriptionFormat_t zclSampleLight_SimpleDesc[];
+
+ 
 
 extern CONST zclCommandRec_t zclSampleLight_Cmds[];
 
@@ -98,6 +100,7 @@ extern uint8  zclSampleLight_IdentifyCommissionState;
 
 // OnOff attributes
 extern uint8  zclSampleLight_OnOff;
+extern uint8  zclSampleLight_OnOff1;
 
 // Level Control Attributes
 #ifdef ZCL_LEVEL_CTRL
