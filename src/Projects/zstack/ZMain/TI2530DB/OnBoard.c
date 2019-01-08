@@ -134,7 +134,7 @@ void InitBoard( uint8 level )
   }
   else  // !OB_COLD
   {
-    /* Initialize Key stuff */
+    /* Initialize Key stuff */
     #if defined (ISR_KEYINTERRUPT)
     HalKeyConfig(HAL_KEY_INTERRUPT_ENABLE , OnBoard_KeyCallback);
     #else
@@ -248,7 +248,8 @@ void OnBoard_KeyCallback ( uint8 keys, uint8 state )
   uint8 shift;
   (void)state;
 
-  shift = (keys & HAL_KEY_SW_6) ? true : false;
+//  shift = (keys & HAL_KEY_SW_6) ? true : false;
+shift = false;
 
   if ( OnBoard_SendKeys( keys, shift ) != ZSuccess )
   {

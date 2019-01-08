@@ -324,6 +324,10 @@ void HalKeyPoll (void)
     keys = halGetJoyKeyInput();
   }
 
+  if (HAL_PUSH_BUTTON1())
+  {
+    keys |= HAL_KEY_SW_6;
+  }
   /* If interrupts are not enabled, previous key status and current key status
    * are compared to find out if a key has changed status.
    */
@@ -342,10 +346,6 @@ void HalKeyPoll (void)
     /* Key interrupt handled here */
   }
 
-  if (HAL_PUSH_BUTTON1())
-  {
-    keys |= HAL_KEY_SW_6;
-  }
 
   /* Invoke Callback if new keys were depressed */
   if (keys && (pHalKeyProcessFunction))
