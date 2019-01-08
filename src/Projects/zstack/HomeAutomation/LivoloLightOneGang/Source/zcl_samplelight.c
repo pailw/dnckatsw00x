@@ -1162,11 +1162,14 @@ if (pPtr->endPoint == SAMPLELIGHT_ENDPOINT) //button 1
   if ( cmd == COMMAND_ON )
   {
     zclSampleLight_OnOff = LIGHT_ON;
+    HalLedBlink(HAL_LED_4, 1, 50, 40);
+
   }
   // Turn off the light
   else if ( cmd == COMMAND_OFF )
   {
     zclSampleLight_OnOff = LIGHT_OFF;
+    HalLedBlink(HAL_LED_2, 1, 50, 40);
   }
   // Toggle the light
   else if ( cmd == COMMAND_TOGGLE )
@@ -1174,10 +1177,12 @@ if (pPtr->endPoint == SAMPLELIGHT_ENDPOINT) //button 1
     if ( zclSampleLight_OnOff == LIGHT_OFF )
     {
       zclSampleLight_OnOff = LIGHT_ON;
+      HalLedBlink(HAL_LED_4, 1, 50, 40);
     }
     else
     {
       zclSampleLight_OnOff = LIGHT_OFF;
+      HalLedBlink(HAL_LED_2, 1, 50, 40);
     }
   }
 }
