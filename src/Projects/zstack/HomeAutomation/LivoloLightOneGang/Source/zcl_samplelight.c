@@ -331,9 +331,38 @@ static zclGeneral_AppCallbacks_t zclSampleLight_CmdCallbacks =
  */
 void zclSampleLight_Init( byte task_id )
 {
+
   zclSampleLight_TaskID = task_id;
 
   
+  Onboard_wait(1000);
+  HalLedSet( HAL_LED_4, HAL_LED_MODE_ON );
+  HalLedSet( HAL_LED_2, HAL_LED_MODE_OFF );
+  Onboard_wait(20);
+  HalLedSet( HAL_LED_4, HAL_LED_MODE_OFF );
+  Onboard_wait(1000);
+  HalLedSet( HAL_LED_4, HAL_LED_MODE_ON );
+  Onboard_wait(20);
+  HalLedSet( HAL_LED_4, HAL_LED_MODE_OFF );
+  Onboard_wait(1000);
+  HalLedSet( HAL_LED_4, HAL_LED_MODE_ON );
+  Onboard_wait(20);
+  HalLedSet( HAL_LED_4, HAL_LED_MODE_OFF );
+  Onboard_wait(1000);
+  HalLedSet( HAL_LED_2, HAL_LED_MODE_ON );
+  Onboard_wait(20);
+  HalLedSet( HAL_LED_2, HAL_LED_MODE_OFF );
+  Onboard_wait(1000);
+  HalLedSet( HAL_LED_2, HAL_LED_MODE_ON );
+  Onboard_wait(20);
+  HalLedSet( HAL_LED_2, HAL_LED_MODE_OFF );
+  Onboard_wait(1000);
+  HalLedSet( HAL_LED_2, HAL_LED_MODE_ON );
+  Onboard_wait(20);
+  HalLedSet( HAL_LED_2, HAL_LED_MODE_OFF );
+  Onboard_wait(1000);
+
+
   // Set destination address to indirect
   zclSampleLight_DstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
   zclSampleLight_DstAddr.endPoint = 0;

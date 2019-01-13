@@ -127,7 +127,7 @@ void osalInitTasks( void )
 #endif
   zcl_Init( taskID++ );
   zclSampleLight_Init( taskID++ );
-  zclSampleLight1_Init( taskID );
+//  zclSampleLight1_Init( taskID );
 }
 
 /*********************************************************************
