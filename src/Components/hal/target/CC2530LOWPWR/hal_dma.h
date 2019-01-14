@@ -1,12 +1,12 @@
 /**************************************************************************************************
   Filename:       hal_dma.h
-  Revised:        $Date: 2011-05-31 11:57:28 -0700 (Tue, 31 May 2011) $
-  Revision:       $Revision: 26163 $
+  Revised:        $Date: 2014-06-19 08:38:22 -0700 (Thu, 19 Jun 2014) $
+  Revision:       $Revision: 39101 $
 
   Description:     This file contains the interface to the DMA Service.
 
 
-  Copyright 2007-2011 Texas Instruments Incorporated. All rights reserved.
+  Copyright 2007-2014 Texas Instruments Incorporated. All rights reserved.
 
   IMPORTANT: Your use of this Software is limited to those specific rights
   granted under the terms of a software license agreement between the user
@@ -104,7 +104,7 @@ extern "C"
 // max length is 0x1FFF.
 #define HAL_DMA_SET_LEN( pDesc, len ) \
   st( \
-    pDesc->xferLenL = (uint8)( (uint16)(len) & 0xFF); \
+    pDesc->xferLenL = (uint8)( (uint16)(len) & 0x00FF); \
     pDesc->xferLenV &= ~HAL_DMA_LEN_H; \
     pDesc->xferLenV |= (uint8)((uint16)(len) >> 8); \
   )

@@ -1,12 +1,12 @@
 /**************************************************************************************************
   Filename:       hal_key.c
-  Revised:        $Date: 2010-09-15 19:02:45 -0700 (Wed, 15 Sep 2010) $
-  Revision:       $Revision: 23815 $
+  Revised:        $Date: 2014-07-02 10:17:23 -0700 (Wed, 02 Jul 2014) $
+  Revision:       $Revision: 39325 $
 
   Description:    This file contains the interface to the HAL KEY Service.
 
 
-  Copyright 2006-2010 Texas Instruments Incorporated. All rights reserved.
+  Copyright 2011-2014 Texas Instruments Incorporated. All rights reserved.
 
   IMPORTANT: Your use of this Software is limited to those specific rights
   granted under the terms of a software license agreement between the user
@@ -43,19 +43,6 @@
        state of the previous poll and will only return a non-zero
        value if the key state changes.
 
- NOTE: If interrupts are used, the KeyRead() function is scheduled
-       25ms after the interrupt occurs by the ISR.  This delay is used
-       for key debouncing.  The ISR disables any further Key interrupt
-       until KeyRead() is executed.  KeyRead() will re-enable Key
-       interrupts after executing.  Unlike polling, when interrupts
-       are enabled, the previous key state is not remembered.  This
-       means that KeyRead() will return the current state of the keys
-       (not a change in state of the keys).
-
- NOTE: If interrupts are used, the KeyRead() fucntion is scheduled by
-       the ISR.  Therefore, the joystick movements will only be detected
-       during a pushbutton interrupt caused by S1 or the center joystick
-       pushbutton.
 
  NOTE: When a switch like S1 is pushed, the S1 signal goes from a normally
        high state to a low state.  This transition is typically clean.  The
@@ -98,32 +85,6 @@
 /**************************************************************************************************
  *                                            CONSTANTS
  **************************************************************************************************/
-#define HAL_KEY_RISING_EDGE   0
-#define HAL_KEY_FALLING_EDGE  1
-
-#define HAL_KEY_DEBOUNCE_VALUE  25
-
-/* CPU port interrupt */
-#define HAL_KEY_CPU_PORT_0_IF P0IF
-#define HAL_KEY_CPU_PORT_2_IF P2IF
-
-/* SW_6 is at P0.1 */
-#define HAL_KEY_SW_6_PORT   P0
-#define HAL_KEY_SW_6_BIT    BV(1)
-#define HAL_KEY_SW_6_SEL    P0SEL
-#define HAL_KEY_SW_6_DIR    P0DIR
-
-/* edge interrupt */
-#define HAL_KEY_SW_6_EDGEBIT  BV(0)
-#define HAL_KEY_SW_6_EDGE     HAL_KEY_FALLING_EDGE
-
-
-/* SW_6 interrupts */
-#define HAL_KEY_SW_6_IEN      IEN1  /* CPU interrupt mask register */
-#define HAL_KEY_SW_6_IENBIT   BV(5) /* Mask bit for all of Port_0 */
-#define HAL_KEY_SW_6_ICTL     P0IEN /* Port Interrupt Control register */
-#define HAL_KEY_SW_6_ICTLBIT  BV(1) /* P0IEN - P0.1 enable/disable bit */
-#define HAL_KEY_SW_6_PXIFG    P0IFG /* Interrupt flag at source */
 
 /**************************************************************************************************
  *                                            TYPEDEFS
@@ -135,14 +96,12 @@
  **************************************************************************************************/
 static uint8 halKeySavedKeys;     /* used to store previous key state in polling mode */
 static halKeyCBack_t pHalKeyProcessFunction;
-bool Hal_KeyIntEnable;            /* interrupt enable/disable flag */
-static uint8 HalKeyConfigured;
+bool Hal_KeyIntEnable = false;            /* key interrupts not supported */
+
 
 /**************************************************************************************************
  *                                        FUNCTIONS - Local
  **************************************************************************************************/
-void halProcessKeyInterrupt(void);
-
 
 /**************************************************************************************************
  *                                        FUNCTIONS - API
@@ -164,14 +123,8 @@ void HalKeyInit( void )
   /* Initialize previous key to 0 */
   halKeySavedKeys = 0;
 
-  HAL_KEY_SW_6_SEL &= ~(HAL_KEY_SW_6_BIT);    /* Set pin function to GPIO */
-  HAL_KEY_SW_6_DIR &= ~(HAL_KEY_SW_6_BIT);    /* Set pin direction to Input */
-
   /* Initialize callback function */
   pHalKeyProcessFunction  = NULL;
-
-  /* Start with key is not configured */
-  HalKeyConfigured = FALSE;
 }
 
 
@@ -187,49 +140,10 @@ void HalKeyInit( void )
  **************************************************************************************************/
 void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
 {
-  /* Enable/Disable Interrupt or */
-  Hal_KeyIntEnable = interruptEnable;
-
   /* Register the callback fucntion */
   pHalKeyProcessFunction = cback;
 
-  /* Determine if interrupt is enable or not */
-  if (Hal_KeyIntEnable)
-  {
-    /* Rising/Falling edge configuratinn */
-
-    PICTL &= ~(HAL_KEY_SW_6_EDGEBIT);    /* Clear the edge bit */
-    /* For falling edge, the bit must be set. */
-  #if (HAL_KEY_SW_6_EDGE == HAL_KEY_FALLING_EDGE)
-    PICTL |= HAL_KEY_SW_6_EDGEBIT;
-  #endif
-
-
-    /* Interrupt configuration:
-     * - Enable interrupt generation at the port
-     * - Enable CPU interrupt
-     * - Clear any pending interrupt
-     */
-    HAL_KEY_SW_6_ICTL |= HAL_KEY_SW_6_ICTLBIT;
-    HAL_KEY_SW_6_IEN |= HAL_KEY_SW_6_IENBIT;
-    HAL_KEY_SW_6_PXIFG = ~(HAL_KEY_SW_6_BIT);
-
-    /* Do this only after the hal_key is configured - to work with sleep stuff */
-    if (HalKeyConfigured == TRUE)
-    {
-      osal_stop_timerEx(Hal_TaskID, HAL_KEY_EVENT);  /* Cancel polling if active */
-    }
-  }
-  else    /* Interrupts NOT enabled */
-  {
-    HAL_KEY_SW_6_ICTL &= ~(HAL_KEY_SW_6_ICTLBIT); /* don't generate interrupt */
-    HAL_KEY_SW_6_IEN &= ~(HAL_KEY_SW_6_IENBIT);   /* Clear interrupt enable bit */
-
-    osal_set_event(Hal_TaskID, HAL_KEY_EVENT);
-  }
-
-  /* Key now is configured */
-  HalKeyConfigured = TRUE;
+  osal_set_event(Hal_TaskID, HAL_KEY_EVENT);
 }
 
 
@@ -248,7 +162,8 @@ uint8 HalKeyRead ( void )
 
   if (HAL_PUSH_BUTTON1())
   {
-    keys |= HAL_KEY_SW_6;
+    //Map S1 to HAL_KEY_2
+    keys |= HAL_KEY_SW_2;
   }
 
   return keys;
@@ -270,62 +185,21 @@ void HalKeyPoll (void)
 
   if (HAL_PUSH_BUTTON1())
   {
-    keys |= HAL_KEY_SW_6;
-  }
-  /* If interrupts are not enabled, previous key status and current key status
-   * are compared to find out if a key has changed status.
-   */
-  if (!Hal_KeyIntEnable)
-  {
-    if (keys == halKeySavedKeys)
-    {
-      /* Exit - since no keys have changed */
-      return;
-    }
-    /* Store the current keys for comparation next time */
-    halKeySavedKeys = keys;
-  }
-  else
-  {
-    /* Key interrupt handled here */
+    keys |= HAL_KEY_SW_2;
   }
 
+  if (keys == halKeySavedKeys)
+  {
+    /* Exit - since no keys have changed */
+    return;
+  }
+  /* Store the current keys for comparation next time */
+  halKeySavedKeys = keys;
 
   /* Invoke Callback if new keys were depressed */
-  if (keys && (pHalKeyProcessFunction))
+  if ( pHalKeyProcessFunction )
   {
     (pHalKeyProcessFunction) (keys, HAL_KEY_STATE_NORMAL);
-  }
-}
-
-
-
-
-
-
-/**************************************************************************************************
- * @fn      halProcessKeyInterrupt
- *
- * @brief   Checks to see if it's a valid key interrupt, saves interrupt driven key states for
- *          processing by HalKeyRead(), and debounces keys by scheduling HalKeyRead() 25ms later.
- *
- * @param
- *
- * @return
- **************************************************************************************************/
-void halProcessKeyInterrupt (void)
-{
-  bool valid=FALSE;
-
-  if (HAL_KEY_SW_6_PXIFG & HAL_KEY_SW_6_BIT)  /* Interrupt Flag has been set */
-  {
-    HAL_KEY_SW_6_PXIFG = ~(HAL_KEY_SW_6_BIT); /* Clear Interrupt Flag */
-    valid = TRUE;
-  }
-
-  if (valid)
-  {
-    osal_start_timerEx (Hal_TaskID, HAL_KEY_EVENT, HAL_KEY_DEBOUNCE_VALUE);
   }
 }
 
@@ -355,39 +229,6 @@ uint8 HalKeyExitSleep ( void )
 {
   /* Wake up and read keys */
   return ( HalKeyRead () );
-}
-
-/***************************************************************************************************
- *                                    INTERRUPT SERVICE ROUTINE
- ***************************************************************************************************/
-
-/**************************************************************************************************
- * @fn      halKeyPort0Isr
- *
- * @brief   Port0 ISR
- *
- * @param
- *
- * @return
- **************************************************************************************************/
-HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
-{
-  HAL_ENTER_ISR();
-
-  if (HAL_KEY_SW_6_PXIFG & HAL_KEY_SW_6_BIT)
-  {
-    halProcessKeyInterrupt();
-  }
-
-  /*
-    Clear the CPU interrupt flag for Port_0
-    PxIFG has to be cleared before PxIF
-  */
-  HAL_KEY_SW_6_PXIFG = 0;
-  HAL_KEY_CPU_PORT_0_IF = 0;
-  
-  CLEAR_SLEEP_MODE();
-  HAL_EXIT_ISR();
 }
 
 #else
