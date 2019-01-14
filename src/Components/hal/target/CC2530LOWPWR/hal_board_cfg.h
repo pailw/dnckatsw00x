@@ -80,6 +80,10 @@
  * ------------------------------------------------------------------------------------------------
  */
 
+#if !defined (OSC32K_CRYSTAL_INSTALLED)
+//defeualt to fitted
+  #define OSC32K_CRYSTAL_INSTALLED TRUE
+#endif
 #define HAL_CPU_CLOCK_MHZ     32
 
 /* This flag should be defined if the SoC uses the 32MHz crystal
@@ -101,19 +105,8 @@
  * ------------------------------------------------------------------------------------------------
  */
 
-#if defined (HAL_BOARD_CC2530EB_REV17) && !defined (HAL_PA_LNA) && \
-    !defined (HAL_PA_LNA_CC2590) && !defined (HAL_PA_LNA_SE2431L) && \
-    !defined (HAL_PA_LNA_CC2592)
   #define HAL_NUM_LEDS            4
-#elif defined (HAL_BOARD_CC2530EB_REV13) || defined (HAL_PA_LNA) ||  \
-      defined (HAL_PA_LNA_CC2590)  || defined (HAL_PA_LNA_CC2592) || \
-      defined (HAL_PA_LNA_SE2431L)
-  #define HAL_NUM_LEDS            1
-#else
-  #error Unknown Board Indentifier
-#endif
-
-#define HAL_LED_BLINK_DELAY()   st( { volatile uint32 i; for (i=0; i<0x5800; i++) { }; } )
+  #define HAL_LED_BLINK_DELAY()   st( { volatile uint32 i; for (i=0; i<0x5800; i++) { }; } )
 
 /* 1 - Green */
 #define LED1_BV           BV(1)
@@ -121,26 +114,23 @@
 #define LED1_DDR          P1DIR
 #define LED1_POLARITY     ACTIVE_HIGH
 
-#if defined (HAL_BOARD_CC2530EB_REV17)
-  /* 2 - Red */
-  #define LED2_BV           BV(2)
-  #define LED2_SBIT         P1_2
-  #define LED2_DDR          P1DIR
-  #define LED2_POLARITY     ACTIVE_HIGH
+/* 2 - Red */
+#define LED2_BV           BV(2)
+#define LED2_SBIT         P1_2
+#define LED2_DDR          P1DIR
+#define LED2_POLARITY     ACTIVE_HIGH
 
-  /* 3 - Yellow */
-  #define LED3_BV           BV(0)
-  #define LED3_SBIT         P1_0
-  #define LED3_DDR          P1DIR
-  #define LED3_POLARITY     ACTIVE_LOW
+/* 3 - Yellow */
+#define LED3_BV           BV(0)
+#define LED3_SBIT         P1_0
+#define LED3_DDR          P1DIR
+#define LED3_POLARITY     ACTIVE_LOW
 
-  /* 4 - Red */
-  #define LED4_BV           BV(4)
-  #define LED4_SBIT         P1_4
-  #define LED4_DDR          P1DIR
-  #define LED4_POLARITY     ACTIVE_HIGH
-
-#endif
+/* 4 - Red */
+#define LED4_BV           BV(4)
+#define LED4_SBIT         P1_4
+#define LED4_DDR          P1DIR
+#define LED4_POLARITY     ACTIVE_HIGH
 
 /* ------------------------------------------------------------------------------------------------
  *                                    Push Button Configuration
@@ -153,28 +143,7 @@
 /* S1 */
 #define PUSH1_BV          BV(1)
 #define PUSH1_SBIT        P0_1
-
-#if defined (HAL_BOARD_CC2530EB_REV17)
-  #define PUSH1_POLARITY    ACTIVE_HIGH
-#elif defined (HAL_BOARD_CC2530EB_REV13)
-  #define PUSH1_POLARITY    ACTIVE_LOW
-#else
-  #error Unknown Board Indentifier
-#endif
-
-/* Joystick Center Press */
-#define PUSH2_BV          BV(0)
-#define PUSH2_SBIT        P2_0
-#define PUSH2_POLARITY    ACTIVE_HIGH
-
-/* ------------------------------------------------------------------------------------------------
- *                                    LCD Configuration
- * ------------------------------------------------------------------------------------------------
- */
-
-/* LCD Max Chars and Buffer */
-#define HAL_LCD_MAX_CHARS   16
-#define HAL_LCD_MAX_BUFF    25
+#define PUSH1_POLARITY    ACTIVE_HIGH
 
 /* ------------------------------------------------------------------------------------------------
  *                         OSAL NV implemented by internal flash pages.
@@ -279,8 +248,6 @@ extern void MAC_RfFrontendSetup(void);
   HAL_TURN_OFF_LED4();                                           \
   LED4_DDR |= LED4_BV;                                           \
                                                                  \
-  /* configure tristates */                                      \
-  P0INP |= PUSH2_BV;                                             \
 }
 
 #elif defined (HAL_BOARD_CC2530EB_REV13) || defined (HAL_PA_LNA) || \
@@ -306,8 +273,6 @@ extern void MAC_RfFrontendSetup(void);
   /* Set PA/LNA HGM control P0_7 */                              \
   P0DIR |= BV(7);                                                \
                                                                  \
-  /* configure tristates */                                      \
-  P0INP |= PUSH2_BV;                                             \
                                                                  \
   /* setup RF frontend if necessary */                           \
   HAL_BOARD_RF_FRONTEND_SETUP();                                 \
@@ -339,10 +304,7 @@ extern void MAC_RfFrontendSetup(void);
                                                                  \
   /* Set PA/LNA HGM control P0_7 */                              \
   P0DIR |= BV(7);                                                \
-                                                                 \
-  /* configure tristates */                                      \
-  P0INP |= PUSH2_BV;                                             \
-                                                                 \
+                                                                 \                                                                 \
   /* setup RF frontend if necessary */                           \
   HAL_BOARD_RF_FRONTEND_SETUP();                                 \
 }
@@ -353,7 +315,7 @@ extern void MAC_RfFrontendSetup(void);
 
 /* ----------- Push Buttons ---------- */
 #define HAL_PUSH_BUTTON1()        (PUSH1_POLARITY (PUSH1_SBIT))
-#define HAL_PUSH_BUTTON2()        (PUSH2_POLARITY (PUSH2_SBIT))
+#define HAL_PUSH_BUTTON2()        (0)
 #define HAL_PUSH_BUTTON3()        (0)
 #define HAL_PUSH_BUTTON4()        (0)
 #define HAL_PUSH_BUTTON5()        (0)
@@ -491,7 +453,7 @@ st( \
 
 /* Set to TRUE enable ADC usage, FALSE disable it */
 #ifndef HAL_ADC
-#define HAL_ADC TRUE
+#define HAL_ADC FALSE
 #endif
 
 /* Set to TRUE enable DMA usage, FALSE disable it */
@@ -501,7 +463,7 @@ st( \
 
 /* Set to TRUE enable Flash access, FALSE disable it */
 #ifndef HAL_FLASH
-#define HAL_FLASH FALSE
+#define HAL_FLASH TRUE
 #endif
 
 /* Set to TRUE enable AES usage, FALSE disable it */

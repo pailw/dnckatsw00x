@@ -105,7 +105,6 @@
 
 /* CPU port interrupt */
 #define HAL_KEY_CPU_PORT_0_IF P0IF
-#define HAL_KEY_CPU_PORT_2_IF P2IF
 
 /* SW_6 is at P0.1 */
 #define HAL_KEY_SW_6_PORT   P0
