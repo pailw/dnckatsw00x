@@ -109,14 +109,14 @@
   #define HAL_LED_BLINK_DELAY()   st( { volatile uint32 i; for (i=0; i<0x5800; i++) { }; } )
 
 /* 1 - Green */
-#define LED1_BV           BV(1)
-#define LED1_SBIT         P1_1
+#define LED1_BV           BV(2)
+#define LED1_SBIT         P1_2
 #define LED1_DDR          P1DIR
 #define LED1_POLARITY     ACTIVE_HIGH
 
 /* 2 - Red */
-#define LED2_BV           BV(2)
-#define LED2_SBIT         P1_2
+#define LED2_BV           BV(1)
+#define LED2_SBIT         P1_1
 #define LED2_DDR          P1DIR
 #define LED2_POLARITY     ACTIVE_HIGH
 
@@ -224,6 +224,35 @@ extern void MAC_RfFrontendSetup(void);
     !defined (HAL_PA_LNA_CC2590) && !defined (HAL_PA_LNA_SE2431L) && \
     !defined (HAL_PA_LNA_CC2592)
 
+#define HAL_BOARD_WAIT_MS( timeout )\
+{\
+  uint16 i;\
+  uint16 t;\
+  i = timeout;\
+  while (i--)\
+  {\
+	  t = 1000;\
+	  while (t--)\
+	  {\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+    asm("NOP");\
+	  }\
+  }\
+}
+
 #define HAL_BOARD_INIT()                                         \
 {                                                                \
   uint16 i;                                                      \
@@ -248,6 +277,31 @@ extern void MAC_RfFrontendSetup(void);
   HAL_TURN_OFF_LED4();                                           \
   LED4_DDR |= LED4_BV;                                           \
                                                                  \
+																 HAL_TURN_ON_LED4();\
+																   HAL_TURN_OFF_LED2();\
+																   HAL_BOARD_WAIT_MS(20);\
+																   HAL_TURN_OFF_LED4();\
+																   HAL_BOARD_WAIT_MS(1000);\
+																   HAL_TURN_ON_LED4();\
+																   HAL_BOARD_WAIT_MS(20);\
+																   HAL_TURN_OFF_LED4();\
+																   HAL_BOARD_WAIT_MS(1000);\
+																   HAL_TURN_ON_LED4();\
+																   HAL_BOARD_WAIT_MS(20);\
+																   HAL_TURN_OFF_LED4();\
+																   HAL_BOARD_WAIT_MS(1000);\
+																   HAL_TURN_ON_LED2();\
+																   HAL_BOARD_WAIT_MS(20);\
+																   HAL_TURN_OFF_LED2();\
+																   HAL_BOARD_WAIT_MS(1000);\
+																   HAL_TURN_ON_LED2();\
+																   HAL_BOARD_WAIT_MS(20);\
+																   HAL_TURN_OFF_LED2();\
+																   HAL_BOARD_WAIT_MS(1000);\
+																   HAL_TURN_ON_LED2();\
+																   HAL_BOARD_WAIT_MS(20);\
+																   HAL_TURN_OFF_LED2();\
+																   HAL_BOARD_WAIT_MS(1000);\
 }
 
 #elif defined (HAL_BOARD_CC2530EB_REV13) || defined (HAL_PA_LNA) || \

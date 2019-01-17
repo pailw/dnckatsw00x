@@ -310,10 +310,10 @@
           <state>NWK_AUTO_POLL</state>
           <state>xHOLD_AUTO_START</state>
           <state>xZTOOL_P1</state>
-          <state>MT_TASK</state>
-          <state>MT_APP_FUNC</state>
-          <state>MT_SYS_FUNC</state>
-          <state>MT_ZDO_FUNC</state>
+          <state>xMT_TASK</state>
+          <state>xMT_APP_FUNC</state>
+          <state>xMT_SYS_FUNC</state>
+          <state>xMT_ZDO_FUNC</state>
           <state>xLCD_SUPPORTED=DEBUG</state>
           <state>MULTICAST_ENABLED=FALSE</state>
           <state>ZCL_READ</state>
@@ -326,8 +326,8 @@
           <state>ZCL_SCENES</state>
           <state>ZCL_GROUPS</state>
           <state>xZCL_LEVEL_CTRL</state>
-          <state>ZCL_DIAGNOSTIC</state>
-          <state>FEATURE_SYSTEM_STATS</state>
+          <state>xZCL_DIAGNOSTIC</state>
+          <state>xFEATURE_SYSTEM_STATS</state>
         </option>
         <option>
           <name>CCPreprocFile</name>

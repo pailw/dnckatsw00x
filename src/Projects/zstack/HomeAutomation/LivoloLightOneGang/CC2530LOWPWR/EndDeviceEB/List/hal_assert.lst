@@ -1,0 +1,1197 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V9.30.3.3983 for 8051                16/Jan/2019  20:41:41
+# Copyright 2004-2016 IAR Systems AB.
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data_rom
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        Z:\home\pail\git\dnckatsw00x\src\Components\hal\common\hal_assert.c
+#    Command line       =  
+#        -f
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\Tools\CC2530DB\f8wEndev.cfg
+#        (-DCPU32MHZ -DROOT=__near_func -DMAC_CFG_TX_DATA_MAX=3
+#        -DMAC_CFG_TX_MAX=6 -DMAC_CFG_RX_MAX=3) -f
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\Tools\CC2530DB\f8wConfig.cfg
+#        (-DZIGBEEPRO -DSECURE=1 -DZG_SECURE_DYNAMIC=0 -DREFLECTOR
+#        -DDEFAULT_CHANLIST=0x00000800 -DZDAPP_CONFIG_PAN_ID=0xFFFF
+#        -DNWK_START_DELAY=100 -DEXTENDED_JOINING_RANDOM_MASK=0x007F
+#        -DBEACON_REQUEST_DELAY=100 -DBEACON_REQ_DELAY_MASK=0x00FF
+#        -DLINK_STATUS_JITTER_MASK=0x007F -DROUTE_EXPIRY_TIME=30
+#        -DAPSC_ACK_WAIT_DURATION_POLLED=3000 -DNWK_INDIRECT_MSG_TIMEOUT=7
+#        -DMAX_RREQ_ENTRIES=8 -DAPSC_MAX_FRAME_RETRIES=3
+#        -DNWK_MAX_DATA_RETRIES=2 -DMAX_POLL_FAILURE_RETRIES=2 -DMAX_BCAST=9
+#        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
+#        -DMAX_BINDING_CLUSTER_IDS=4 "-DDEFAULT_KEY={0x01, 0x03, 0x05, 0x07,
+#        0x09, 0x0B, 0x0D, 0x0F, 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C,
+#        0x0D}" -DMAC_MAX_FRAME_SIZE=116 -DZDNWKMGR_MIN_TRANSMISSIONS=20
+#        "-DCONST=const __code" -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE
+#        -DPOLL_RATE=1000 -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100
+#        -DREJOIN_POLL_RATE=440 -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000)
+#        -f
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\Tools\CC2530DB\f8wZCL.cfg
+#        Z:\home\pail\git\dnckatsw00x\src\Components\hal\common\hal_assert.c -D
+#        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D POWER_SAVING
+#        -D NWK_AUTO_POLL -D xHOLD_AUTO_START -D xZTOOL_P1 -D xMT_TASK -D
+#        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xLCD_SUPPORTED=DEBUG
+#        -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_WRITE -D ZCL_REPORT -D
+#        xZCL_EZMODE -D ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF -D ZCL_SCENES
+#        -D ZCL_GROUPS -D xZCL_LEVEL_CTRL -D xZCL_DIAGNOSTIC -D
+#        xFEATURE_SYSTEM_STATS -lC
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\EndDeviceEB\List
+#        -lA
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\EndDeviceEB\List
+#        --diag_suppress Pe001,Pa010 -o
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\EndDeviceEB\Obj
+#        -e --debug --core=plain --dptr=16,1 --data_model=large
+#        --code_model=banked --calling_convention=xdata_reentrant
+#        --place_constants=data_rom --nr_virtual_regs 16 -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\Source\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\Source\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\ZMain\TI2530DB\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\hal\include\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\hal\target\CC2530LOWPWR\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\mac\include\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\mac\high_level\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\mac\low_level\srf04\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\mt\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\osal\include\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\services\saddr\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\services\sdata\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\stack\af\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\stack\nwk\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\stack\sapi\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\stack\sec\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\stack\sys\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\stack\zcl\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\stack\zdo\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\zmac\
+#        -I
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\..\..\..\..\..\Components\zmac\f8w\
+#        -Ohz --require_prototypes
+#    List file          =  
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\EndDeviceEB\List\hal_assert.lst
+#    Object file        =  
+#        Z:\home\pail\git\dnckatsw00x\src\Projects\zstack\HomeAutomation\LivoloLightOneGang\CC2530LOWPWR\EndDeviceEB\Obj\hal_assert.r51
+#
+###############################################################################
+
+Z:\home\pail\git\dnckatsw00x\src\Components\hal\common\hal_assert.c
+      1          /**************************************************************************************************
+      2            Filename:       hal_assert.c
+      3            Revised:        $Date: 2014-07-23 12:14:30 -0700 (Wed, 23 Jul 2014) $
+      4            Revision:       $Revision: 39492 $
+      5          
+      6            Description:    Describe the purpose and contents of the file.
+      7          
+      8          
+      9            Copyright 2006-2014 Texas Instruments Incorporated. All rights reserved.
+     10          
+     11            IMPORTANT: Your use of this Software is limited to those specific rights
+     12            granted under the terms of a software license agreement between the user
+     13            who downloaded the software, his/her employer (which must be your employer)
+     14            and Texas Instruments Incorporated (the "License").  You may not use this
+     15            Software unless you agree to abide by the terms of the License. The License
+     16            limits your use, and you acknowledge, that the Software may not be modified,
+     17            copied or distributed unless embedded on a Texas Instruments microcontroller
+     18            or used solely and exclusively in conjunction with a Texas Instruments radio
+     19            frequency transceiver, which is integrated into your product.  Other than for
+     20            the foregoing purpose, you may not use, reproduce, copy, prepare derivative
+     21            works of, modify, distribute, perform, display or sell this Software and/or
+     22            its documentation for any purpose.
+     23          
+     24            YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
+     25            PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+     26            INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
+     27            NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
+     28            TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
+     29            NEGLIGENCE, STRICT LIABILITY, CONTRIBUTION, BREACH OF WARRANTY, OR OTHER
+     30            LEGAL EQUITABLE THEORY ANY DIRECT OR INDIRECT DAMAGES OR EXPENSES
+     31            INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE
+     32            OR CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT
+     33            OF SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
+     34            (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
+     35          
+     36            Should you have any questions regarding your right to use this Software,
+     37            contact Texas Instruments Incorporated at www.TI.com.
+     38          **************************************************************************************************/
+     39          
+     40          
+     41          /* ------------------------------------------------------------------------------------------------
+     42           *                                          Includes
+     43           * ------------------------------------------------------------------------------------------------
+     44           */
+     45          #include "hal_assert.h"
+     46          #include "hal_types.h"
+     47          #include "hal_board.h"
+
+   \                                 In  segment SFR_AN, at 0x80
+   \   union <unnamed> volatile __sfr _A_P0
+   \                     _A_P0:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0x90
+   \   union <unnamed> volatile __sfr _A_P1
+   \                     _A_P1:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0x9d
+   \   unsigned char volatile __sfr SLEEPSTA
+   \                     SLEEPSTA:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0x9e
+   \   unsigned char volatile __sfr CLKCONSTA
+   \                     CLKCONSTA:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xa8
+   \   union <unnamed> volatile __sfr _A_IEN0
+   \                     _A_IEN0:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xbe
+   \   unsigned char volatile __sfr SLEEPCMD
+   \                     SLEEPCMD:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xc6
+   \   unsigned char volatile __sfr CLKCONCMD
+   \                     CLKCONCMD:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xfe
+   \   unsigned char volatile __sfr P1DIR
+   \                     P1DIR:
+   \   000000                DS 1
+     48          #include "hal_defs.h"
+     49          #include "hal_mcu.h"
+     50          
+     51          #if (defined HAL_MCU_AVR) || (defined HAL_MCU_CC2430) || (defined HAL_MCU_CC2530) || \
+     52              (defined HAL_MCU_CC2533) || (defined HAL_MCU_MSP430)
+     53            /* for access to debug data */
+     54          #include "mac_rx.h"
+     55          #include "mac_tx.h"
+     56          #endif
+     57          
+     58          /* ------------------------------------------------------------------------------------------------
+     59           *                                       Local Prototypes
+     60           * ------------------------------------------------------------------------------------------------
+     61           */
+     62          void halAssertHazardLights(void);
+     63          
+     64          
+     65          /**************************************************************************************************
+     66           * @fn          halAssertHandler
+     67           *
+     68           * @brief       Logic to handle an assert.
+     69           *
+     70           * @param       none
+     71           *
+     72           * @return      none
+     73           **************************************************************************************************
+     74           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     75          void halAssertHandler( void )
+   \                     halAssertHandler:
+     76          {
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
+     77          #if defined( HAL_ASSERT_RESET )
+     78            HAL_SYSTEM_RESET();
+     79          #elif defined ( HAL_ASSERT_LIGHTS )
+     80            halAssertHazardLights();
+     81          #elif defined( HAL_ASSERT_SPIN )
+     82            volatile uint8 i = 1;
+     83            HAL_DISABLE_INTERRUPTS();
+     84            while(i);
+     85          #endif
+     86          
+     87            return;
+   \   000000   02....       LJMP    ?BRET
+     88          }
+     89          
+     90          #if !defined ASSERT_WHILE
+     91          /**************************************************************************************************
+     92           * @fn          halAssertHazardLights
+     93           *
+     94           * @brief       Blink LEDs to indicate an error.
+     95           *
+     96           * @param       none
+     97           *
+     98           * @return      none
+     99           **************************************************************************************************
+    100           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    101          void halAssertHazardLights(void)
+   \                     halAssertHazardLights:
+    102          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000   74F4         MOV     A,#-0xc
+   \   000002   12....       LCALL   ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 12
+   \   000005                ; Auto size: 10
+   \   000005   74F6         MOV     A,#-0xa
+   \   000007   12....       LCALL   ?ALLOC_XSTACK8
+    103            enum
+    104            {
+    105              DEBUG_DATA_RSTACK_HIGH_OFS,
+    106              DEBUG_DATA_RSTACK_LOW_OFS,
+    107              DEBUG_DATA_TX_ACTIVE_OFS,
+    108              DEBUG_DATA_RX_ACTIVE_OFS,
+    109          
+    110          #if (defined HAL_MCU_AVR) || (defined HAL_MCU_CC2430)
+    111              DEBUG_DATA_INT_MASK_OFS,
+    112          #elif (defined HAL_MCU_CC2530) || (defined HAL_MCU_CC2533)
+    113              DEBUG_DATA_INT_MASK0_OFS,
+    114              DEBUG_DATA_INT_MASK1_OFS,
+    115          #endif
+    116          
+    117              DEBUG_DATA_SIZE
+    118            };
+    119          
+    120            uint8 buttonHeld;
+    121            uint8 debugData[DEBUG_DATA_SIZE];
+    122          
+    123            /* disable all interrupts before anything else */
+    124            HAL_DISABLE_INTERRUPTS();
+   \   00000A   C2AF         CLR     0xa8.7
+    125          
+    126            /*-------------------------------------------------------------------------------
+    127             *  Initialize LEDs and turn them off.
+    128             */
+    129            HAL_BOARD_INIT();
+   \   00000C   53BEFB       ANL     0xbe,#0xfb
+   \                     ??halAssertHazardLights_0:
+   \   00000F   E59D         MOV     A,0x9d
+   \   000011   A2E6         MOV     C,0xE0 /* A   */.6
+   \   000013   50FA         JNC     ??halAssertHazardLights_0
+   \   000015   00           NOP
+   \   000016   78F8         MOV     R0,#-0x8
+   \   000018   7901         MOV     R1,#0x1
+   \                     ??halAssertHazardLights_1:
+   \   00001A   00           NOP
+   \   00001B   E8           MOV     A,R0
+   \   00001C   24FF         ADD     A,#-0x1
+   \   00001E   18           DEC     R0
+   \   00001F   E9           MOV     A,R1
+   \   000020   34FF         ADDC    A,#-0x1
+   \   000022   F9           MOV     R1,A
+   \   000023   E8           MOV     A,R0
+   \   000024   49           ORL     A,R1
+   \   000025   70F3         JNZ     ??halAssertHazardLights_1
+   \   000027   75C600       MOV     0xc6,#0x0
+   \                     ??halAssertHazardLights_2:
+   \   00002A   E59E         MOV     A,0x9e
+   \   00002C   70FC         JNZ     ??halAssertHazardLights_2
+   \   00002E   43BE04       ORL     0xbe,#0x4
+   \   000031   906270       MOV     DPTR,#0x6270
+   \   000034   7408         MOV     A,#0x8
+   \   000036   F0           MOVX    @DPTR,A
+   \   000037   C292         CLR     0x90.2
+   \   000039   43FE04       ORL     0xfe,#0x4
+   \   00003C   C291         CLR     0x90.1
+   \   00003E   43FE02       ORL     0xfe,#0x2
+   \   000041   D290         SETB    0x90.0
+   \   000043   43FE01       ORL     0xfe,#0x1
+   \   000046   C294         CLR     0x90.4
+   \   000048   43FE10       ORL     0xfe,#0x10
+   \   00004B   D294         SETB    0x90.4
+   \   00004D   C291         CLR     0x90.1
+   \   00004F   7A14         MOV     R2,#0x14
+   \   000051   7B00         MOV     R3,#0x0
+   \                     ??halAssertHazardLights_3:
+   \   000053   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_12:
+   \   000056   601A         JZ      ??halAssertHazardLights_4
+   \   000058   78E8         MOV     R0,#-0x18
+   \   00005A   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_5:
+   \   00005C   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_0:
+   \   00005F   60F2         JZ      ??halAssertHazardLights_3
+   \   000061   00           NOP
+   \   000062   00           NOP
+   \   000063   00           NOP
+   \   000064   00           NOP
+   \   000065   00           NOP
+   \   000066   00           NOP
+   \   000067   00           NOP
+   \   000068   00           NOP
+   \   000069   00           NOP
+   \   00006A   00           NOP
+   \   00006B   00           NOP
+   \   00006C   00           NOP
+   \   00006D   00           NOP
+   \   00006E   00           NOP
+   \   00006F   00           NOP
+   \   000070   80EA         SJMP    ??halAssertHazardLights_5
+   \                     ??halAssertHazardLights_4:
+   \   000072   C294         CLR     0x90.4
+   \   000074   7AE8         MOV     R2,#-0x18
+   \   000076   7B03         MOV     R3,#0x3
+   \                     ??halAssertHazardLights_6:
+   \   000078   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_13:
+   \   00007B   601A         JZ      ??halAssertHazardLights_7
+   \   00007D   78E8         MOV     R0,#-0x18
+   \   00007F   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_8:
+   \   000081   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_1:
+   \   000084   60F2         JZ      ??halAssertHazardLights_6
+   \   000086   00           NOP
+   \   000087   00           NOP
+   \   000088   00           NOP
+   \   000089   00           NOP
+   \   00008A   00           NOP
+   \   00008B   00           NOP
+   \   00008C   00           NOP
+   \   00008D   00           NOP
+   \   00008E   00           NOP
+   \   00008F   00           NOP
+   \   000090   00           NOP
+   \   000091   00           NOP
+   \   000092   00           NOP
+   \   000093   00           NOP
+   \   000094   00           NOP
+   \   000095   80EA         SJMP    ??halAssertHazardLights_8
+   \                     ??halAssertHazardLights_7:
+   \   000097   D294         SETB    0x90.4
+   \   000099   7A14         MOV     R2,#0x14
+   \   00009B   7B00         MOV     R3,#0x0
+   \                     ??halAssertHazardLights_9:
+   \   00009D   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_14:
+   \   0000A0   601A         JZ      ??halAssertHazardLights_10
+   \   0000A2   78E8         MOV     R0,#-0x18
+   \   0000A4   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_11:
+   \   0000A6   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_2:
+   \   0000A9   60F2         JZ      ??halAssertHazardLights_9
+   \   0000AB   00           NOP
+   \   0000AC   00           NOP
+   \   0000AD   00           NOP
+   \   0000AE   00           NOP
+   \   0000AF   00           NOP
+   \   0000B0   00           NOP
+   \   0000B1   00           NOP
+   \   0000B2   00           NOP
+   \   0000B3   00           NOP
+   \   0000B4   00           NOP
+   \   0000B5   00           NOP
+   \   0000B6   00           NOP
+   \   0000B7   00           NOP
+   \   0000B8   00           NOP
+   \   0000B9   00           NOP
+   \   0000BA   80EA         SJMP    ??halAssertHazardLights_11
+   \                     ??halAssertHazardLights_10:
+   \   0000BC   C294         CLR     0x90.4
+   \   0000BE   7AE8         MOV     R2,#-0x18
+   \   0000C0   7B03         MOV     R3,#0x3
+   \                     ??halAssertHazardLights_12:
+   \   0000C2   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_15:
+   \   0000C5   601A         JZ      ??halAssertHazardLights_13
+   \   0000C7   78E8         MOV     R0,#-0x18
+   \   0000C9   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_14:
+   \   0000CB   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_3:
+   \   0000CE   60F2         JZ      ??halAssertHazardLights_12
+   \   0000D0   00           NOP
+   \   0000D1   00           NOP
+   \   0000D2   00           NOP
+   \   0000D3   00           NOP
+   \   0000D4   00           NOP
+   \   0000D5   00           NOP
+   \   0000D6   00           NOP
+   \   0000D7   00           NOP
+   \   0000D8   00           NOP
+   \   0000D9   00           NOP
+   \   0000DA   00           NOP
+   \   0000DB   00           NOP
+   \   0000DC   00           NOP
+   \   0000DD   00           NOP
+   \   0000DE   00           NOP
+   \   0000DF   80EA         SJMP    ??halAssertHazardLights_14
+   \                     ??halAssertHazardLights_13:
+   \   0000E1   D294         SETB    0x90.4
+   \   0000E3   7A14         MOV     R2,#0x14
+   \   0000E5   7B00         MOV     R3,#0x0
+   \                     ??halAssertHazardLights_15:
+   \   0000E7   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_16:
+   \   0000EA   601A         JZ      ??halAssertHazardLights_16
+   \   0000EC   78E8         MOV     R0,#-0x18
+   \   0000EE   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_17:
+   \   0000F0   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_4:
+   \   0000F3   60F2         JZ      ??halAssertHazardLights_15
+   \   0000F5   00           NOP
+   \   0000F6   00           NOP
+   \   0000F7   00           NOP
+   \   0000F8   00           NOP
+   \   0000F9   00           NOP
+   \   0000FA   00           NOP
+   \   0000FB   00           NOP
+   \   0000FC   00           NOP
+   \   0000FD   00           NOP
+   \   0000FE   00           NOP
+   \   0000FF   00           NOP
+   \   000100   00           NOP
+   \   000101   00           NOP
+   \   000102   00           NOP
+   \   000103   00           NOP
+   \   000104   80EA         SJMP    ??halAssertHazardLights_17
+   \                     ??halAssertHazardLights_16:
+   \   000106   C294         CLR     0x90.4
+   \   000108   7AE8         MOV     R2,#-0x18
+   \   00010A   7B03         MOV     R3,#0x3
+   \                     ??halAssertHazardLights_18:
+   \   00010C   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_17:
+   \   00010F   601A         JZ      ??halAssertHazardLights_19
+   \   000111   78E8         MOV     R0,#-0x18
+   \   000113   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_20:
+   \   000115   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_5:
+   \   000118   60F2         JZ      ??halAssertHazardLights_18
+   \   00011A   00           NOP
+   \   00011B   00           NOP
+   \   00011C   00           NOP
+   \   00011D   00           NOP
+   \   00011E   00           NOP
+   \   00011F   00           NOP
+   \   000120   00           NOP
+   \   000121   00           NOP
+   \   000122   00           NOP
+   \   000123   00           NOP
+   \   000124   00           NOP
+   \   000125   00           NOP
+   \   000126   00           NOP
+   \   000127   00           NOP
+   \   000128   00           NOP
+   \   000129   80EA         SJMP    ??halAssertHazardLights_20
+   \                     ??halAssertHazardLights_19:
+   \   00012B   D291         SETB    0x90.1
+   \   00012D   7A14         MOV     R2,#0x14
+   \   00012F   7B00         MOV     R3,#0x0
+   \                     ??halAssertHazardLights_21:
+   \   000131   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_18:
+   \   000134   601A         JZ      ??halAssertHazardLights_22
+   \   000136   78E8         MOV     R0,#-0x18
+   \   000138   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_23:
+   \   00013A   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_6:
+   \   00013D   60F2         JZ      ??halAssertHazardLights_21
+   \   00013F   00           NOP
+   \   000140   00           NOP
+   \   000141   00           NOP
+   \   000142   00           NOP
+   \   000143   00           NOP
+   \   000144   00           NOP
+   \   000145   00           NOP
+   \   000146   00           NOP
+   \   000147   00           NOP
+   \   000148   00           NOP
+   \   000149   00           NOP
+   \   00014A   00           NOP
+   \   00014B   00           NOP
+   \   00014C   00           NOP
+   \   00014D   00           NOP
+   \   00014E   80EA         SJMP    ??halAssertHazardLights_23
+   \                     ??halAssertHazardLights_22:
+   \   000150   C291         CLR     0x90.1
+   \   000152   7AE8         MOV     R2,#-0x18
+   \   000154   7B03         MOV     R3,#0x3
+   \                     ??halAssertHazardLights_24:
+   \   000156   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_19:
+   \   000159   601A         JZ      ??halAssertHazardLights_25
+   \   00015B   78E8         MOV     R0,#-0x18
+   \   00015D   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_26:
+   \   00015F   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_7:
+   \   000162   60F2         JZ      ??halAssertHazardLights_24
+   \   000164   00           NOP
+   \   000165   00           NOP
+   \   000166   00           NOP
+   \   000167   00           NOP
+   \   000168   00           NOP
+   \   000169   00           NOP
+   \   00016A   00           NOP
+   \   00016B   00           NOP
+   \   00016C   00           NOP
+   \   00016D   00           NOP
+   \   00016E   00           NOP
+   \   00016F   00           NOP
+   \   000170   00           NOP
+   \   000171   00           NOP
+   \   000172   00           NOP
+   \   000173   80EA         SJMP    ??halAssertHazardLights_26
+   \                     ??halAssertHazardLights_25:
+   \   000175   D291         SETB    0x90.1
+   \   000177   7A14         MOV     R2,#0x14
+   \   000179   7B00         MOV     R3,#0x0
+   \                     ??halAssertHazardLights_27:
+   \   00017B   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_20:
+   \   00017E   601A         JZ      ??halAssertHazardLights_28
+   \   000180   78E8         MOV     R0,#-0x18
+   \   000182   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_29:
+   \   000184   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_8:
+   \   000187   60F2         JZ      ??halAssertHazardLights_27
+   \   000189   00           NOP
+   \   00018A   00           NOP
+   \   00018B   00           NOP
+   \   00018C   00           NOP
+   \   00018D   00           NOP
+   \   00018E   00           NOP
+   \   00018F   00           NOP
+   \   000190   00           NOP
+   \   000191   00           NOP
+   \   000192   00           NOP
+   \   000193   00           NOP
+   \   000194   00           NOP
+   \   000195   00           NOP
+   \   000196   00           NOP
+   \   000197   00           NOP
+   \   000198   80EA         SJMP    ??halAssertHazardLights_29
+   \                     ??halAssertHazardLights_28:
+   \   00019A   C291         CLR     0x90.1
+   \   00019C   7AE8         MOV     R2,#-0x18
+   \   00019E   7B03         MOV     R3,#0x3
+   \                     ??halAssertHazardLights_30:
+   \   0001A0   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_21:
+   \   0001A3   601A         JZ      ??halAssertHazardLights_31
+   \   0001A5   78E8         MOV     R0,#-0x18
+   \   0001A7   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_32:
+   \   0001A9   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_9:
+   \   0001AC   60F2         JZ      ??halAssertHazardLights_30
+   \   0001AE   00           NOP
+   \   0001AF   00           NOP
+   \   0001B0   00           NOP
+   \   0001B1   00           NOP
+   \   0001B2   00           NOP
+   \   0001B3   00           NOP
+   \   0001B4   00           NOP
+   \   0001B5   00           NOP
+   \   0001B6   00           NOP
+   \   0001B7   00           NOP
+   \   0001B8   00           NOP
+   \   0001B9   00           NOP
+   \   0001BA   00           NOP
+   \   0001BB   00           NOP
+   \   0001BC   00           NOP
+   \   0001BD   80EA         SJMP    ??halAssertHazardLights_32
+   \                     ??halAssertHazardLights_31:
+   \   0001BF   D291         SETB    0x90.1
+   \   0001C1   7A14         MOV     R2,#0x14
+   \   0001C3   7B00         MOV     R3,#0x0
+   \                     ??halAssertHazardLights_33:
+   \   0001C5   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_22:
+   \   0001C8   601A         JZ      ??halAssertHazardLights_34
+   \   0001CA   78E8         MOV     R0,#-0x18
+   \   0001CC   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_35:
+   \   0001CE   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_10:
+   \   0001D1   60F2         JZ      ??halAssertHazardLights_33
+   \   0001D3   00           NOP
+   \   0001D4   00           NOP
+   \   0001D5   00           NOP
+   \   0001D6   00           NOP
+   \   0001D7   00           NOP
+   \   0001D8   00           NOP
+   \   0001D9   00           NOP
+   \   0001DA   00           NOP
+   \   0001DB   00           NOP
+   \   0001DC   00           NOP
+   \   0001DD   00           NOP
+   \   0001DE   00           NOP
+   \   0001DF   00           NOP
+   \   0001E0   00           NOP
+   \   0001E1   00           NOP
+   \   0001E2   80EA         SJMP    ??halAssertHazardLights_35
+   \                     ??halAssertHazardLights_34:
+   \   0001E4   C291         CLR     0x90.1
+   \   0001E6   7AE8         MOV     R2,#-0x18
+   \   0001E8   7B03         MOV     R3,#0x3
+   \                     ??halAssertHazardLights_36:
+   \   0001EA   12....       LCALL   ?Subroutine1 & 0xFFFF
+   \                     ??CrossCallReturnLabel_23:
+   \   0001ED   601A         JZ      ??halAssertHazardLights_37
+   \   0001EF   78E8         MOV     R0,#-0x18
+   \   0001F1   7903         MOV     R1,#0x3
+   \                     ??halAssertHazardLights_38:
+   \   0001F3   12....       LCALL   ?Subroutine0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_11:
+   \   0001F6   60F2         JZ      ??halAssertHazardLights_36
+   \   0001F8   00           NOP
+   \   0001F9   00           NOP
+   \   0001FA   00           NOP
+   \   0001FB   00           NOP
+   \   0001FC   00           NOP
+   \   0001FD   00           NOP
+   \   0001FE   00           NOP
+   \   0001FF   00           NOP
+   \   000200   00           NOP
+   \   000201   00           NOP
+   \   000202   00           NOP
+   \   000203   00           NOP
+   \   000204   00           NOP
+   \   000205   00           NOP
+   \   000206   00           NOP
+   \   000207   80EA         SJMP    ??halAssertHazardLights_38
+    130          
+    131            HAL_TURN_OFF_LED1();
+   \                     ??halAssertHazardLights_37:
+   \   000209   C292         CLR     0x90.2
+    132            HAL_TURN_OFF_LED2();
+   \   00020B   C291         CLR     0x90.1
+    133            HAL_TURN_OFF_LED3();
+   \   00020D   D290         SETB    0x90.0
+    134            HAL_TURN_OFF_LED4();
+   \   00020F   C294         CLR     0x90.4
+   \   000211   8019         SJMP    ??halAssertHazardLights_39
+    135          
+    136            /*-------------------------------------------------------------------------------
+    137             *  Master infinite loop.
+    138             */
+    139            for (;;)
+    140            {
+    141              buttonHeld = 0;
+    142          
+    143              /*-------------------------------------------------------------------------------
+    144               *  "Hazard lights" loop.  A held keypress will exit this loop.
+    145               */
+    146              do
+    147              {
+    148                HAL_LED_BLINK_DELAY();
+    149          
+    150                /* toggle LEDS, the #ifdefs are in case HAL has logically remapped non-existent LEDs */
+    151          #if (HAL_NUM_LEDS >= 1)
+    152                HAL_TOGGLE_LED1();
+    153          #if (HAL_NUM_LEDS >= 2)
+    154                HAL_TOGGLE_LED2();
+    155          #if (HAL_NUM_LEDS >= 3)
+    156                HAL_TOGGLE_LED3();
+    157          #if (HAL_NUM_LEDS >= 4)
+    158                HAL_TOGGLE_LED4();
+    159          #endif
+    160          #endif
+    161          #endif
+    162          #endif
+    163          
+    164                /* escape hatch to continue execution, set escape to '1' to continue execution */
+    165                {
+    166                  static uint8 escape = 0;
+    167                  if (escape)
+    168                  {
+    169                    escape = 0;
+    170                    return;
+    171                  }
+    172                }
+    173          
+    174                /* break out of loop if button is held long enough */
+    175                if (HAL_PUSH_BUTTON1())
+    176                {
+    177                  buttonHeld++;
+    178                }
+    179                else
+    180                {
+    181                  buttonHeld = 0;
+    182                }
+    183              }
+    184              while (buttonHeld != 10);  /* loop until button is held specified number of loops */
+    185          
+    186              /*-------------------------------------------------------------------------------
+    187               *  Just exited from "hazard lights" loop.
+    188               */
+    189          
+    190              /* turn off all LEDs */
+    191              HAL_TURN_OFF_LED1();
+    192              HAL_TURN_OFF_LED2();
+    193              HAL_TURN_OFF_LED3();
+    194              HAL_TURN_OFF_LED4();
+    195          
+    196              /* wait for button release */
+    197              HAL_DEBOUNCE(!HAL_PUSH_BUTTON1());
+    198          
+    199              /*-------------------------------------------------------------------------------
+    200               *  Load debug data into memory.
+    201               */
+    202          #ifdef HAL_MCU_AVR
+    203              {
+    204                uint8 * pStack;
+    205                pStack = (uint8 *) SP;
+    206                pStack++; /* point to return address on stack */
+    207                debugData[DEBUG_DATA_RSTACK_HIGH_OFS] = *pStack;
+    208                pStack++;
+    209                debugData[DEBUG_DATA_RSTACK_LOW_OFS] = *pStack;
+    210              }
+    211              debugData[DEBUG_DATA_INT_MASK_OFS] = EIMSK;
+    212          #endif
+    213          
+    214          #if (defined HAL_MCU_CC2430)
+    215              debugData[DEBUG_DATA_INT_MASK_OFS] = RFIM;
+    216          #elif (defined HAL_MCU_CC2530) || (defined HAL_MCU_CC2533)
+    217              debugData[DEBUG_DATA_INT_MASK0_OFS] = RFIRQM0;
+    218              debugData[DEBUG_DATA_INT_MASK1_OFS] = RFIRQM1;
+    219          #endif
+    220          
+    221          
+    222          #if (defined HAL_MCU_AVR) || (defined HAL_MCU_CC2430) || (defined HAL_MCU_CC2530) || \
+    223              (defined HAL_MCU_CC2533) || (defined HAL_MCU_MSP430)
+    224              debugData[DEBUG_DATA_TX_ACTIVE_OFS] = macTxActive;
+    225              debugData[DEBUG_DATA_RX_ACTIVE_OFS] = macRxActive;
+    226          #endif
+    227          
+    228             /* initialize for data dump loop */
+    229              {
+    230                uint8 iBit;
+    231                uint8 iByte;
+    232          
+    233                iBit  = 0;
+    234                iByte = 0;
+    235          
+    236                /*-------------------------------------------------------------------------------
+    237                 *  Data dump loop.  A button press cycles data bits to an LED.
+    238                 */
+    239                while (iByte < DEBUG_DATA_SIZE)
+    240                {
+    241                  /* wait for key press */
+    242                  while(!HAL_PUSH_BUTTON1());
+    243          
+    244                  /* turn on all LEDs for first bit of byte, turn on three LEDs if not first bit */
+    245                  HAL_TURN_ON_LED1();
+    246                  HAL_TURN_ON_LED2();
+    247                  HAL_TURN_ON_LED3();
+    248                  if (iBit == 0)
+    249                  {
+    250                    HAL_TURN_ON_LED4();
+    251                  }
+    252                  else
+    253                  {
+    254                    HAL_TURN_OFF_LED4();
+    255                  }
+    256          
+    257                  /* wait for debounced key release */
+    258                  HAL_DEBOUNCE(!HAL_PUSH_BUTTON1());
+    259          
+    260                  /* turn off all LEDs */
+    261                  HAL_TURN_OFF_LED1();
+    262                  HAL_TURN_OFF_LED2();
+    263                  HAL_TURN_OFF_LED3();
+    264                  HAL_TURN_OFF_LED4();
+    265          
+    266                  /* output value of data bit to LED1 */
+    267                  if (debugData[iByte] & (1 << (7 - iBit)))
+    268                  {
+    269                    HAL_TURN_ON_LED1();
+    270                  }
+    271                  else
+    272                  {
+    273                    HAL_TURN_OFF_LED1();
+   \                     ??halAssertHazardLights_40:
+   \   000213   C292         CLR     0x90.2
+    274                  }
+    275          
+    276                  /* advance to next bit */
+    277                  iBit++;
+   \                     ??halAssertHazardLights_41:
+   \   000215   0A           INC     R2
+    278                  if (iBit == 8)
+   \   000216   7408         MOV     A,#0x8
+   \   000218   6A           XRL     A,R2
+   \   000219   6003         JZ      $+5
+   \   00021B   02....       LJMP    ??halAssertHazardLights_42 & 0xFFFF
+    279                  {
+    280                    iBit = 0;
+   \   00021E   7A00         MOV     R2,#0x0
+    281                    iByte++;
+   \   000220   0B           INC     R3
+    282                  }
+   \   000221   EB           MOV     A,R3
+   \   000222   C3           CLR     C
+   \   000223   9406         SUBB    A,#0x6
+   \   000225   5003         JNC     $+5
+   \   000227   02....       LJMP    ??halAssertHazardLights_42 & 0xFFFF
+    283                }
+    284              }
+    285          
+    286              /*
+    287               *  About to enter "hazard lights" loop again.  Turn off LED1 in case the last bit
+    288               *  displayed happened to be one.  This guarantees all LEDs are off at the start of
+    289               *  the flashing loop which uses a toggle operation to change LED states.
+    290               */
+    291              HAL_TURN_OFF_LED1();
+   \   00022A   C292         CLR     0x90.2
+   \                     ??halAssertHazardLights_39:
+   \   00022C   7900         MOV     R1,#0x0
+   \                     ??halAssertHazardLights_43:
+   \   00022E   7406         MOV     A,#0x6
+   \   000230   12....       LCALL   ?XSTACK_DISP0_8
+   \   000233   E4           CLR     A
+   \   000234   F0           MOVX    @DPTR,A
+   \   000235   A3           INC     DPTR
+   \   000236   F0           MOVX    @DPTR,A
+   \   000237   A3           INC     DPTR
+   \   000238   F0           MOVX    @DPTR,A
+   \   000239   A3           INC     DPTR
+   \   00023A   F0           MOVX    @DPTR,A
+   \   00023B   8012         SJMP    ??halAssertHazardLights_44
+   \                     ??halAssertHazardLights_45:
+   \   00023D   90....       MOV     DPTR,#__Constant_1
+   \   000240   78..         MOV     R0,#?V0
+   \   000242   12....       LCALL   ?L_MOV_X
+   \   000245   7406         MOV     A,#0x6
+   \   000247   12....       LCALL   ?XSTACK_DISP0_8
+   \   00024A   78..         MOV     R0,#?V0
+   \   00024C   12....       LCALL   ?L_ADD_TO_X
+   \                     ??halAssertHazardLights_44:
+   \   00024F   90....       MOV     DPTR,#__Constant_5800
+   \   000252   78..         MOV     R0,#?V0
+   \   000254   12....       LCALL   ?L_MOV_X
+   \   000257   7406         MOV     A,#0x6
+   \   000259   12....       LCALL   ?XSTACK_DISP0_8
+   \   00025C   78..         MOV     R0,#?V0
+   \   00025E   12....       LCALL   ?UL_GT_X
+   \   000261   40DA         JC      ??halAssertHazardLights_45
+   \   000263   A292         MOV     C,0x90.2
+   \   000265   5004         JNC     ??halAssertHazardLights_46
+   \   000267   C292         CLR     0x90.2
+   \   000269   8002         SJMP    ??halAssertHazardLights_47
+   \                     ??halAssertHazardLights_46:
+   \   00026B   D292         SETB    0x90.2
+   \                     ??halAssertHazardLights_47:
+   \   00026D   A291         MOV     C,0x90.1
+   \   00026F   5004         JNC     ??halAssertHazardLights_48
+   \   000271   C291         CLR     0x90.1
+   \   000273   8002         SJMP    ??halAssertHazardLights_49
+   \                     ??halAssertHazardLights_48:
+   \   000275   D291         SETB    0x90.1
+   \                     ??halAssertHazardLights_49:
+   \   000277   A290         MOV     C,0x90.0
+   \   000279   5004         JNC     ??halAssertHazardLights_50
+   \   00027B   C290         CLR     0x90.0
+   \   00027D   8002         SJMP    ??halAssertHazardLights_51
+   \                     ??halAssertHazardLights_50:
+   \   00027F   D290         SETB    0x90.0
+   \                     ??halAssertHazardLights_51:
+   \   000281   A294         MOV     C,0x90.4
+   \   000283   5004         JNC     ??halAssertHazardLights_52
+   \   000285   C294         CLR     0x90.4
+   \   000287   8002         SJMP    ??halAssertHazardLights_53
+   \                     ??halAssertHazardLights_52:
+   \   000289   D294         SETB    0x90.4
+   \                     ??halAssertHazardLights_53:
+   \   00028B   90....       MOV     DPTR,#??escape
+   \   00028E   E0           MOVX    A,@DPTR
+   \   00028F   600C         JZ      ??halAssertHazardLights_54
+   \   000291   E4           CLR     A
+   \   000292   F0           MOVX    @DPTR,A
+   \   000293   740A         MOV     A,#0xa
+   \   000295   12....       LCALL   ?DEALLOC_XSTACK8
+   \   000298   7F04         MOV     R7,#0x4
+   \   00029A   02....       LJMP    ?BANKED_LEAVE_XDATA
+   \                     ??halAssertHazardLights_54:
+   \   00029D   A281         MOV     C,0x80.1
+   \   00029F   508B         JNC     ??halAssertHazardLights_39
+   \   0002A1   09           INC     R1
+   \   0002A2   740A         MOV     A,#0xa
+   \   0002A4   69           XRL     A,R1
+   \   0002A5   7087         JNZ     ??halAssertHazardLights_43
+   \   0002A7   C292         CLR     0x90.2
+   \   0002A9   C291         CLR     0x90.1
+   \   0002AB   D290         SETB    0x90.0
+   \   0002AD   C294         CLR     0x90.4
+   \   0002AF   7800         MOV     R0,#0x0
+   \   0002B1   7900         MOV     R1,#0x0
+   \                     ??halAssertHazardLights_55:
+   \   0002B3   A281         MOV     C,0x80.1
+   \   0002B5   5004         JNC     ??halAssertHazardLights_56
+   \   0002B7   7800         MOV     R0,#0x0
+   \   0002B9   7900         MOV     R1,#0x0
+   \                     ??halAssertHazardLights_56:
+   \   0002BB   08           INC     R0
+   \   0002BC   E8           MOV     A,R0
+   \   0002BD   7001         JNZ     ??halAssertHazardLights_57
+   \   0002BF   09           INC     R1
+   \                     ??halAssertHazardLights_57:
+   \   0002C0   12....       LCALL   ?Subroutine2 & 0xFFFF
+   \                     ??CrossCallReturnLabel_24:
+   \   0002C3   40EE         JC      ??halAssertHazardLights_55
+   \   0002C5   9061A3       MOV     DPTR,#0x61a3
+   \   0002C8   E0           MOVX    A,@DPTR
+   \   0002C9   C0E0         PUSH    A
+   \   0002CB   7404         MOV     A,#0x4
+   \   0002CD   12....       LCALL   ?XSTACK_DISP0_8
+   \   0002D0   D0E0         POP     A
+   \   0002D2   F0           MOVX    @DPTR,A
+   \   0002D3   9061A4       MOV     DPTR,#0x61a4
+   \   0002D6   E0           MOVX    A,@DPTR
+   \   0002D7   C0E0         PUSH    A
+   \   0002D9   7405         MOV     A,#0x5
+   \   0002DB   12....       LCALL   ?XSTACK_DISP0_8
+   \   0002DE   D0E0         POP     A
+   \   0002E0   F0           MOVX    @DPTR,A
+   \   0002E1   90....       MOV     DPTR,#macTxActive
+   \   0002E4   E0           MOVX    A,@DPTR
+   \   0002E5   C0E0         PUSH    A
+   \   0002E7   7402         MOV     A,#0x2
+   \   0002E9   12....       LCALL   ?XSTACK_DISP0_8
+   \   0002EC   D0E0         POP     A
+   \   0002EE   F0           MOVX    @DPTR,A
+   \   0002EF   90....       MOV     DPTR,#macRxActive
+   \   0002F2   E0           MOVX    A,@DPTR
+   \   0002F3   C0E0         PUSH    A
+   \   0002F5   7403         MOV     A,#0x3
+   \   0002F7   12....       LCALL   ?XSTACK_DISP0_8
+   \   0002FA   D0E0         POP     A
+   \   0002FC   F0           MOVX    @DPTR,A
+   \   0002FD   7A00         MOV     R2,#0x0
+   \   0002FF   7B00         MOV     R3,#0x0
+   \                     ??halAssertHazardLights_42:
+   \   000301   A281         MOV     C,0x80.1
+   \   000303   50FC         JNC     ??halAssertHazardLights_42
+   \   000305   D292         SETB    0x90.2
+   \   000307   D291         SETB    0x90.1
+   \   000309   C290         CLR     0x90.0
+   \   00030B   EA           MOV     A,R2
+   \   00030C   7004         JNZ     ??halAssertHazardLights_58
+   \   00030E   D294         SETB    0x90.4
+   \   000310   8002         SJMP    ??halAssertHazardLights_59
+   \                     ??halAssertHazardLights_58:
+   \   000312   C294         CLR     0x90.4
+   \                     ??halAssertHazardLights_59:
+   \   000314   7800         MOV     R0,#0x0
+   \   000316   7900         MOV     R1,#0x0
+   \                     ??halAssertHazardLights_60:
+   \   000318   A281         MOV     C,0x80.1
+   \   00031A   5004         JNC     ??halAssertHazardLights_61
+   \   00031C   7800         MOV     R0,#0x0
+   \   00031E   7900         MOV     R1,#0x0
+   \                     ??halAssertHazardLights_61:
+   \   000320   08           INC     R0
+   \   000321   E8           MOV     A,R0
+   \   000322   7001         JNZ     ??halAssertHazardLights_62
+   \   000324   09           INC     R1
+   \                     ??halAssertHazardLights_62:
+   \   000325   12....       LCALL   ?Subroutine2 & 0xFFFF
+   \                     ??CrossCallReturnLabel_25:
+   \   000328   40EE         JC      ??halAssertHazardLights_60
+   \   00032A   C292         CLR     0x90.2
+   \   00032C   C291         CLR     0x90.1
+   \   00032E   D290         SETB    0x90.0
+   \   000330   C294         CLR     0x90.4
+   \   000332   75..01       MOV     ?V0,#0x1
+   \   000335   75..00       MOV     ?V1,#0x0
+   \   000338   7407         MOV     A,#0x7
+   \   00033A   C3           CLR     C
+   \   00033B   9A           SUBB    A,R2
+   \   00033C   78..         MOV     R0,#?V0
+   \   00033E   12....       LCALL   ?S_SHL
+   \   000341   EB           MOV     A,R3
+   \   000342   F8           MOV     R0,A
+   \   000343   85..82       MOV     DPL,?XSP + 0
+   \   000346   85..83       MOV     DPH,?XSP + 1
+   \   000349   E582         MOV     A,DPL
+   \   00034B   28           ADD     A,R0
+   \   00034C   F582         MOV     DPL,A
+   \   00034E   E4           CLR     A
+   \   00034F   3583         ADDC    A,DPH
+   \   000351   F583         MOV     DPH,A
+   \   000353   E0           MOVX    A,@DPTR
+   \   000354   55..         ANL     A,?V0
+   \   000356   7003         JNZ     $+5
+   \   000358   02....       LJMP    ??halAssertHazardLights_40 & 0xFFFF
+   \   00035B   D292         SETB    0x90.2
+   \   00035D   02....       LJMP    ??halAssertHazardLights_41 & 0xFFFF
+   \   000360                REQUIRE _A_IEN0
+   \   000360                REQUIRE SLEEPCMD
+   \   000360                REQUIRE SLEEPSTA
+   \   000360                REQUIRE CLKCONCMD
+   \   000360                REQUIRE CLKCONSTA
+   \   000360                REQUIRE _A_P1
+   \   000360                REQUIRE P1DIR
+   \   000360                REQUIRE _A_P0
+    292            }
+    293          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine2:
+   \   000000   C3           CLR     C
+   \   000001   94F4         SUBB    A,#-0xc
+   \   000003   E9           MOV     A,R1
+   \   000004   9401         SUBB    A,#0x1
+   \   000006   A2D2         MOV     C,0xD0 /* PSW */.2
+   \   000008   65D0         XRL     A,PSW
+   \   00000A   33           RLC     A
+   \   00000B   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine1:
+   \   000000   EA           MOV     A,R2
+   \   000001   F8           MOV     R0,A
+   \   000002   EB           MOV     A,R3
+   \   000003   F9           MOV     R1,A
+   \   000004   E8           MOV     A,R0
+   \   000005   24FF         ADD     A,#-0x1
+   \   000007   1A           DEC     R2
+   \   000008   E9           MOV     A,R1
+   \   000009   34FF         ADDC    A,#-0x1
+   \   00000B   FB           MOV     R3,A
+   \   00000C   E8           MOV     A,R0
+   \   00000D   49           ORL     A,R1
+   \   00000E   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   E8           MOV     A,R0
+   \   000001   FC           MOV     R4,A
+   \   000002   E9           MOV     A,R1
+   \   000003   FD           MOV     R5,A
+   \   000004   EC           MOV     A,R4
+   \   000005   24FF         ADD     A,#-0x1
+   \   000007   18           DEC     R0
+   \   000008   ED           MOV     A,R5
+   \   000009   34FF         ADDC    A,#-0x1
+   \   00000B   F9           MOV     R1,A
+   \   00000C   EC           MOV     A,R4
+   \   00000D   4D           ORL     A,R5
+   \   00000E   22           RET
+
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
+   \                     ??escape:
+   \   000000                DS 1
+   \   000001                REQUIRE __INIT_XDATA_Z
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     __Constant_1:
+   \   000000   01000000     DD 1
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     __Constant_5800:
+   \   000000   00580000     DD 22528
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??halAssertHandler::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    halAssertHandler
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??halAssertHazardLights::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    halAssertHazardLights
+    294          #endif
+    295          
+    296          /* ------------------------------------------------------------------------------------------------
+    297           *                                    Compile Time Assertions
+    298           * ------------------------------------------------------------------------------------------------
+    299           */
+    300          
+    301          /* integrity check of type sizes */
+    302          HAL_ASSERT_SIZE(  int8, 1);
+    303          HAL_ASSERT_SIZE( uint8, 1);
+    304          HAL_ASSERT_SIZE( int16, 2);
+    305          HAL_ASSERT_SIZE(uint16, 2);
+    306          HAL_ASSERT_SIZE( int32, 4);
+    307          HAL_ASSERT_SIZE(uint32, 4);
+    308          
+    309          
+    310          /**************************************************************************************************
+    311          */
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      0      0   halAssertHandler
+      1     22   halAssertHazardLights
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      15  ?Subroutine0
+      15  ?Subroutine1
+      12  ?Subroutine2
+       1  CLKCONCMD
+       1  CLKCONSTA
+       1  P1DIR
+       1  SLEEPCMD
+       1  SLEEPSTA
+       1  _A_IEN0
+       1  _A_P0
+       1  _A_P1
+       4  __Constant_1
+       4  __Constant_5800
+       1  escape
+       3  halAssertHandler
+       6  halAssertHandler::?relay
+     864  halAssertHazardLights
+       6  halAssertHazardLights::?relay
+
+ 
+ 909 bytes in segment BANKED_CODE
+  12 bytes in segment BANK_RELAYS
+   8 bytes in segment SFR_AN
+   8 bytes in segment XDATA_ROM_C
+   1 byte  in segment XDATA_Z
+ 
+  12 bytes of CODE     memory
+   0 bytes of CONST    memory (+ 8 bytes shared)
+   0 bytes of DATA     memory (+ 8 bytes shared)
+ 909 bytes of HUGECODE memory
+   1 byte  of XDATA    memory
+
+Errors: none
+Warnings: none

@@ -110,7 +110,7 @@ void osalInitTasks( void )
 
   tasksEvents = (uint16 *)osal_mem_alloc( sizeof( uint16 ) * tasksCnt);
   osal_memset( tasksEvents, 0, (sizeof( uint16 ) * tasksCnt));
-
+  zclPower_Init(taskID);
   macTaskInit( taskID++ );
   nwk_init( taskID++ );
   Hal_Init( taskID++ );

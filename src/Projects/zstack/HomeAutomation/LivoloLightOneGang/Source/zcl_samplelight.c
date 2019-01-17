@@ -320,6 +320,40 @@ static zclGeneral_AppCallbacks_t zclSampleLight_CmdCallbacks =
   NULL                                   // RSSI Location Response command
 };
 
+void zclPower_Init( byte task_id )
+{
+
+//  zclSampleLight_TaskID = task_id;
+
+  
+//  Onboard_wait_ms(1000);
+/*  HAL_TURN_ON_LED4();
+  HAL_TURN_OFF_LED2();
+  Onboard_wait_ms(20);
+  HAL_TURN_OFF_LED4();
+  Onboard_wait_ms(1000);
+  HAL_TURN_ON_LED4();
+  Onboard_wait_ms(20);
+  HAL_TURN_OFF_LED4();
+  Onboard_wait_ms(1000);
+  HAL_TURN_ON_LED4();
+  Onboard_wait_ms(20);
+  HAL_TURN_OFF_LED4();
+  Onboard_wait_ms(1000);
+  HAL_TURN_ON_LED2();
+  Onboard_wait_ms(20);
+  HAL_TURN_OFF_LED2();
+  Onboard_wait_ms(1000);
+  HAL_TURN_ON_LED2();
+  Onboard_wait_ms(20);
+  HAL_TURN_OFF_LED2();
+  Onboard_wait_ms(1000);
+  HAL_TURN_ON_LED2();
+  Onboard_wait_ms(20);
+  HAL_TURN_OFF_LED2();
+  Onboard_wait_ms(1000);*/
+}
+
 /*********************************************************************
  * @fn          zclSampleLight_Init
  *
@@ -329,38 +363,11 @@ static zclGeneral_AppCallbacks_t zclSampleLight_CmdCallbacks =
  *
  * @return      none
  */
+
 void zclSampleLight_Init( byte task_id )
 {
 
   zclSampleLight_TaskID = task_id;
-
-  
-  Onboard_wait(1000);
-  HalLedSet( HAL_LED_4, HAL_LED_MODE_ON );
-  HalLedSet( HAL_LED_2, HAL_LED_MODE_OFF );
-  Onboard_wait(20);
-  HalLedSet( HAL_LED_4, HAL_LED_MODE_OFF );
-  Onboard_wait(1000);
-  HalLedSet( HAL_LED_4, HAL_LED_MODE_ON );
-  Onboard_wait(20);
-  HalLedSet( HAL_LED_4, HAL_LED_MODE_OFF );
-  Onboard_wait(1000);
-  HalLedSet( HAL_LED_4, HAL_LED_MODE_ON );
-  Onboard_wait(20);
-  HalLedSet( HAL_LED_4, HAL_LED_MODE_OFF );
-  Onboard_wait(1000);
-  HalLedSet( HAL_LED_2, HAL_LED_MODE_ON );
-  Onboard_wait(20);
-  HalLedSet( HAL_LED_2, HAL_LED_MODE_OFF );
-  Onboard_wait(1000);
-  HalLedSet( HAL_LED_2, HAL_LED_MODE_ON );
-  Onboard_wait(20);
-  HalLedSet( HAL_LED_2, HAL_LED_MODE_OFF );
-  Onboard_wait(1000);
-  HalLedSet( HAL_LED_2, HAL_LED_MODE_ON );
-  Onboard_wait(20);
-  HalLedSet( HAL_LED_2, HAL_LED_MODE_OFF );
-  Onboard_wait(1000);
 
 
   // Set destination address to indirect

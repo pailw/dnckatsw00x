@@ -125,6 +125,7 @@ extern uint8  zclSampleLight_LevelDefaultMoveRate;
   */
 extern void zclSampleLight_Init( byte task_id );
 extern void zclSampleLight1_Init( byte task_id );
+extern void zclPower_Init( byte task_id );
 
 /*
  *  Event Process for the task
